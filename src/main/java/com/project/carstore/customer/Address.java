@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 public class Address {
     @Id
     private Integer CustomerId;
-
     public Integer getCustomerId() {
         return CustomerId;
     }

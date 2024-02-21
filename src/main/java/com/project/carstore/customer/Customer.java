@@ -13,11 +13,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "FirstName",nullable = false,length = 50)
-    private String firstname;
-
-    @Column(name = "LastName",nullable = false,length = 50)
-    private String lastname;
+    @Column(name = "Name",nullable = false,length = 50)
+    private String name;
 
     @Column(name = "Email",nullable = false,length = 200)
     private String email;
@@ -52,8 +49,7 @@ public class Customer {
 
     public Customer(Integer id, String firstname, String lastname, String email, String password, Integer mobileNo) {
         this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.mobileNo = mobileNo;
@@ -70,20 +66,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getname() {
+        return name;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setname(String firstname) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -109,4 +97,12 @@ public class Customer {
     public void setAddress(List<Address> address) {
         this.address = address;
     }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
 }
