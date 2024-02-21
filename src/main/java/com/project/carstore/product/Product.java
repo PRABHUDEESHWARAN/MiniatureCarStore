@@ -21,26 +21,30 @@ public class Product {
     @Column(nullable = false)
     private String ImageUrl;
 
+    @Column(nullable = false,length = 15)
+    private String Colour;
+
     @Column(nullable = false)
     private Integer Quantity;
 
     public Product() {
     }
 
-    public Product( String name, Double price, String description, String imageUrl, Integer quantity) {
+    public Product(String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
 
         Name = name;
         Price = price;
         Description = description;
         ImageUrl = imageUrl;
+        Colour = colour;
         Quantity = quantity;
     }
 
-    public long getId() {
+    public Long getId() {
         return Id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 
@@ -74,6 +78,14 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         ImageUrl = imageUrl;
+    }
+
+    public String getColour() {
+        return Colour;
+    }
+
+    public void setColour(String colour) {
+        Colour = colour;
     }
 
     public Integer getQuantity() {
