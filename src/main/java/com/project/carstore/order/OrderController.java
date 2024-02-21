@@ -17,8 +17,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @PostMapping("createOrder")
-    public Order createOrder(@RequestBody CustomerDTO customerDto, @RequestBody List<OrderItem> orderItems, @RequestBody  PaymentDetails paymentDetails)
-    {
+    public Order createOrder(@RequestBody CustomerDTO customerDto, @RequestBody List<OrderItem> orderItems, @RequestBody  PaymentDetails paymentDetails) throws OrderException {
         return this.orderService.createOrder(customerDto,orderItems,paymentDetails);
   }
 
@@ -43,18 +42,21 @@ public class OrderController {
         return this.orderService.getOrderDate();
     }
     @GetMapping("totalPrice")
-    public Integer getTotalPrice(@RequestBody List<OrderItem> orderItems)
-    {
+    public Integer getTotalPrice(@RequestBody List<OrderItem> orderItems) throws OrderException {
         return  this.orderService.getTotalPrices(orderItems);
     }
     @GetMapping("paymentStatus")
-    public Boolean paymentStatus(@RequestBody PaymentDetails paymentDetails)
-    {
+    public Boolean paymentStatus(@RequestBody PaymentDetails paymentDetails) throws OrderException {
         return this.orderService.paymentStatus(paymentDetails);
     }
     @GetMapping("orderStatus/{id}")
     public String getOrderStatus(@PathVariable("id") Integer id) throws OrderException {
         return this.orderService.getOrderStatusById(id);
+    }
+    @GetMapping("checkAvailability")
+    public Boolean checkAvailabilityOfOrderItem(@RequestBody Order order)
+    {
+        return this.orderService.checkAvailabilityOfOrderItem(order);
     }
 
 }

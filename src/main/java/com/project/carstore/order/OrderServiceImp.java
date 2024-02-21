@@ -31,10 +31,13 @@ public class OrderServiceImp implements OrderService{
 
 
     @Override
-    public Order createOrder(CustomerDTO customerDto, List<OrderItem> orderItems, PaymentDetails paymentDetails) {
+    public Order createOrder(CustomerDTO customerDto, List<OrderItem> orderItems, PaymentDetails paymentDetails) throws OrderException {
 
         Order newOrder=null;
-        //check exception for valid customer
+        if(customerDto.getId()==null)
+        {
+            throw new OrderException("customer doesn't exist");
+        }
         newOrder=new Order(customerDto.getId(),customerDto.getFirstname(),customerDto.getLastname(),orderItems,paymentDetails);
         addOrderToCustomerOrdersList(newOrder);
         return this.orderRepository.save(newOrder);
@@ -43,7 +46,11 @@ public class OrderServiceImp implements OrderService{
     }
 
     @Override
-    public List<Order> addOrderToCustomerOrdersList(Order newOrder) {
+    public List<Order> addOrderToCustomerOrdersList(Order newOrder) throws OrderException {
+        if(newOrder.getId()==null)
+        {
+            throw new OrderException("order need to be created");
+        }
         Optional<Customer> customerOptional=this.customerService.getCustomerById(newOrder.getCustomerID());
        if(customerOptional.isPresent())
        {
@@ -77,7 +84,11 @@ public class OrderServiceImp implements OrderService{
 
 
     @Override
-    public Integer getTotalPrices(List<OrderItem> orderItems) {
+    public Integer getTotalPrices(List<OrderItem> orderItems) throws OrderException {
+        if(orderItems.isEmpty())
+        {
+            throw  new OrderException("no item exist");
+        }
         Integer totalPrice=0;
         for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.getPrice();
@@ -91,25 +102,50 @@ public class OrderServiceImp implements OrderService{
     }
 
     @Override
-    public Boolean paymentStatus(PaymentDetails paymentDetails) {
+    public Boolean paymentStatus(PaymentDetails paymentDetails) throws OrderException {
+        if(paymentDetails.getOrderId()==null)
+        {
+            throw new OrderException("order is not exist to check the status");
+        }
         return paymentDetails.getStatus();
     }
 
     @Override
     public String getOrderStatusById(Integer id) throws OrderException {
+        if(this.getOrderById(id)==null)
+        {
+            throw new OrderException("order is not exist");
+        }
 
          return this.getOrderById(id).getOrderStatus();
     }
 
     @Override
-    public LocalDate getDeliveryDateByOrderId(Order order) {
+    public LocalDate getDeliveryDateByOrderId(Order order) throws OrderException {
+        if(order==null)
+        {
+            throw new OrderException("order should be exist");
+        }
         LocalDate orderDate=order.getOrderDate();
         return orderDate.plusDays(7);
     }
 
     @Override
-    public Integer getTotalNumberOfItems(List<OrderItem> orderItems) {
+    public Integer getTotalNumberOfItems(List<OrderItem> orderItems) throws OrderException {
+        if(orderItems.isEmpty())
+        {
+            throw new OrderException("no item exists");
+        }
         return orderItems.size();
+    }
+
+    @Override
+    public Boolean checkAvailabilityOfOrderItem(Order order) {
+        if(order.getId()==null)
+        {
+            return false;
+        }
+        return true;
     }
 
 
