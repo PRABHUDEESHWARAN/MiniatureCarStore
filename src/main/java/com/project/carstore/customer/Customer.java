@@ -3,9 +3,11 @@ package com.project.carstore.customer;
 import com.project.carstore.cart.Cart;
 import com.project.carstore.order.Order;
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+@Component
 
 @Entity
 public class Customer {

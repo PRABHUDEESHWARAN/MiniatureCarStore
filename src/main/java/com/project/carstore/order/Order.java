@@ -4,22 +4,27 @@ import com.project.carstore.customer.Address;
 import com.project.carstore.customer.Customer;
 import com.project.carstore.payment.PaymentDetails;
 import jakarta.persistence.*;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+@Component
 
 @Entity
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
-    private Customer customer;
+//    @ManyToOne
+//   private Customer customer;
+    private Integer customerID;
+    private String firstName;
+    private String LastName;
 
     @OneToMany
     private List<OrderItem> orderItem=new ArrayList<>();
-    private String paymentStatus;
+
     private Integer totalPrice;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
@@ -28,26 +33,44 @@ public class Order {
 
     @OneToOne
     private PaymentDetails paymentDetails;
-    private Boolean orderStatus;
+    private String orderStatus;
     private Integer totalItems;
-    private LocalDate createdAt;
+
 
     public Order() {
     }
 
-    public Order(Integer id, Customer customer, List<OrderItem> orderItem, String paymentStatus, Integer totalPrice, LocalDate orderDate, LocalDate deliveryDate, Address address, PaymentDetails paymentDetails, Boolean orderStatus, Integer totalItems, LocalDate createdAt) {
-        this.id = id;
-        this.customer = customer;
+    public Order( Integer customerID, String firstName, String lastName, List<OrderItem> orderItem, PaymentDetails paymentDetails) {
+
+        this.customerID = customerID;
+        this.firstName = firstName;
+        LastName = lastName;
         this.orderItem = orderItem;
-        this.paymentStatus = paymentStatus;
-        this.totalPrice = totalPrice;
-        this.orderDate = orderDate;
-        this.deliveryDate = deliveryDate;
-        this.address = address;
         this.paymentDetails = paymentDetails;
-        this.orderStatus = orderStatus;
-        this.totalItems = totalItems;
-        this.createdAt = createdAt;
+    }
+
+    public Integer getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(Integer customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 
     public Integer getId() {
@@ -58,13 +81,7 @@ public class Order {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 
     public List<OrderItem> getOrderItem() {
         return orderItem;
@@ -74,13 +91,7 @@ public class Order {
         this.orderItem = orderItem;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
 
     public Integer getTotalPrice() {
         return totalPrice;
@@ -122,11 +133,11 @@ public class Order {
         this.paymentDetails = paymentDetails;
     }
 
-    public Boolean getOrderStatus() {
+    public String getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(Boolean orderStatus) {
+    public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -138,11 +149,5 @@ public class Order {
         this.totalItems = totalItems;
     }
 
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
 
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
 }
