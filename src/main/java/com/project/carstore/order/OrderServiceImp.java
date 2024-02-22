@@ -38,8 +38,12 @@ public class OrderServiceImp implements OrderService{
         {
             throw new OrderException("customer doesn't exist");
         }
+        if(orderItems.isEmpty())
+        {
+            throw new OrderException("you should order some items");
+        }
         newOrder=new Order(customerDto.getId(),customerDto.getFirstname(),customerDto.getLastname(),orderItems,paymentDetails);
-        addOrderToCustomerOrdersList(newOrder);
+
         return this.orderRepository.save(newOrder);
 
 
