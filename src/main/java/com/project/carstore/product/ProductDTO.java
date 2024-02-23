@@ -1,6 +1,7 @@
 package com.project.carstore.product;
 
 public class ProductDTO {
+<<<<<<< HEAD
     private Long id;
     private String name;
     private Double price;
@@ -8,10 +9,20 @@ public class ProductDTO {
     private String imageUrl;
     private String colour;
     private Integer quantity;
+=======
+   
+    private String Name;
+    private Double Price;
+    private String Description;
+    private String ImageUrl;
+    private String Colour;
+    private Integer Quantity;
+>>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
 
     public ProductDTO() {
     }
 
+<<<<<<< HEAD
     public ProductDTO(String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
 
         this.name = name;
@@ -20,6 +31,16 @@ public class ProductDTO {
         this.imageUrl = imageUrl;
         this.colour = colour;
         this.quantity = quantity;
+=======
+    public ProductDTO( String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
+        
+        Name = name;
+        Price = price;
+        Description = description;
+        ImageUrl = imageUrl;
+        Colour = colour;
+        Quantity = quantity;
+>>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
     }
 
     public Long getId() {

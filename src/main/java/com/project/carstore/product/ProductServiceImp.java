@@ -59,31 +59,49 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<Product> getAllProducts() throws ProductException {
         if(this.productRepository.findAll().isEmpty())
+<<<<<<< HEAD
             throw new ProductException("No Product Found");
+=======
+            throw new ProductException("No product found");
+>>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         return this.productRepository.findAll();
     }
 
     @Override
     public Product getProductById(Long id) throws ProductException {
         //handle exceptions
+<<<<<<< HEAD
         Optional<Product> foundProduct=this.productRepository.findById(id);
         if(foundProduct==null)
             throw new ProductException("Product not found:"+id);
 
+=======
+        Optional<Product> foundProduct=this.productRepository.getProductById(id);
+        if(foundProduct==null)
+            throw new ProductException("Product not found:"+id);
+>>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         return foundProduct.get();
     }
 
     @Override
     public List<Product> getAllProductsByPrice(Double price) throws ProductException {
         if(this.productRepository.findAll().isEmpty())
+<<<<<<< HEAD
             throw new ProductException("Product not found");
+=======
+            throw new ProductException("No product found");
+>>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         return productRepository.findByPrice(price);
     }
 
     @Override
     public List<Product> getAllProductsByPriceRange(Double min, Double max) throws ProductException {
         if(this.productRepository.findAll().isEmpty())
+<<<<<<< HEAD
             throw new ProductException("No product found");
+=======
+            throw new ProductException("no product found");
+>>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         List<Product> allProducts=productRepository.findAll();
         List<Product> productsPriceRange;
         productsPriceRange = allProducts.stream().filter(product->product.getPrice() >=min && product.getPrice() <=max).collect(Collectors.toList());
