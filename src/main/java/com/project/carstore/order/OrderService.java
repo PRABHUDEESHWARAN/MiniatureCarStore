@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-    Order createOrder(CustomerDTO customerDto, List<OrderItem> orderItems, PaymentDetails paymentDetails) throws OrderException;
+    Order createOrder(Integer customerId) throws OrderException;
     List<Order> addOrderToCustomerOrdersList(Order newOrder) throws OrderException;
     Order getOrderById(Integer id) throws OrderException;
     Order deleteOrderById(Integer id);
@@ -18,7 +18,7 @@ public interface OrderService {
 
  Order updateOrder(Order newOrder);
 
- Integer getTotalPrices(List<OrderItem> orderItems) throws OrderException;
+ Double getTotalPrices(List<OrderItem> orderItems) throws OrderException;
     LocalDate getOrderDate();
     Boolean paymentStatus(PaymentDetails paymentDetails) throws OrderException;
     String getOrderStatusById(Integer id) throws OrderException;

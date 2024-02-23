@@ -12,10 +12,20 @@ public class CardInfo {
     private Integer cardInfoId;
     private Integer cardNumber;
     private LocalDate expiryDate;
+
+    public Integer getCardInfoId() {
+        return cardInfoId;
+    }
+
+    public void setCardInfoId(Integer cardInfoId) {
+        this.cardInfoId = cardInfoId;
+    }
+
     private Integer cvv;
 
-    public CardInfo(String cardholderName, Integer cardNumber, LocalDate expiryDate, Integer cvv) {
+    public CardInfo(String cardholderName, Integer cardInfoId, Integer cardNumber, LocalDate expiryDate, Integer cvv) {
         this.cardholderName = cardholderName;
+        this.cardInfoId = cardInfoId;
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
         this.cvv = cvv;

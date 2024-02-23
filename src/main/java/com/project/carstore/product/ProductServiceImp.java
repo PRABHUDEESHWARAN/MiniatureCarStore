@@ -55,4 +55,9 @@ public class ProductServiceImp implements ProductService {
             throw new ProductException("No Product  exist with Id:"+ProductToBeUpdated.getId());
         }
     }
+
+    @Override
+    public Optional<Product> getProductById(Long productId) {
+        return this.productRepository.findById(productId);
+    }
 }

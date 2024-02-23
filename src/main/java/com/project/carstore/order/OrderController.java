@@ -16,9 +16,9 @@ import java.util.Optional;
 public class OrderController {
     @Autowired
     private OrderService orderService;
-    @PostMapping("createOrder")
-    public Order createOrder(@RequestBody OrderDto orderDto) throws OrderException {
-        return this.orderService.createOrder(orderDto.getCustomerDTO(),orderDto.getOrderItems(),orderDto.getPaymentDetails());
+    @PostMapping("/createOrder/{customerId}")
+    public Order createOrder(@PathVariable("customerId") Integer customerId) throws OrderException {
+        return this.orderService.createOrder(customerId);
   }
 
     @GetMapping("getOrder")
@@ -42,7 +42,7 @@ public class OrderController {
         return this.orderService.getOrderDate();
     }
     @GetMapping("totalPrice")
-    public Integer getTotalPrice(@RequestBody List<OrderItem> orderItems) throws OrderException {
+    public Double getTotalPrice(@RequestBody List<OrderItem> orderItems) throws OrderException {
         return  this.orderService.getTotalPrices(orderItems);
     }
     @GetMapping("paymentStatus")

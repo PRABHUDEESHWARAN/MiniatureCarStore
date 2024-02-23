@@ -4,34 +4,38 @@ import com.project.carstore.customer.Address;
 import com.project.carstore.customer.Customer;
 import com.project.carstore.payment.PaymentDetails;
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-@Component
+import java.util.Set;
+
 
 @Entity
+@Table(name = "OrderTable")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @ManyToOne
-//   private Customer customer;
-    private Integer customerID;
+
+    @Column(nullable = false)
+    private Integer customerId;
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String LastName;
 
-    @OneToMany
-    private List<OrderItem> orderItem=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<OrderItem> orderItem=new HashSet<>();
 
-    private Integer totalPrice;
+    private Double totalPrice;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     @OneToOne
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PaymentDetails paymentDetails;
     private String orderStatus;
     private Integer totalItems;
@@ -40,22 +44,15 @@ public class Order {
     public Order() {
     }
 
-    public Order( Integer customerID, String firstName, String lastName, List<OrderItem> orderItem, PaymentDetails paymentDetails) {
+    public Order( Integer customerId, String firstName, String lastName) {
 
-        this.customerID = customerID;
+        this.customerId = customerId;
         this.firstName = firstName;
         LastName = lastName;
-        this.orderItem = orderItem;
-        this.paymentDetails = paymentDetails;
+
     }
 
-    public Integer getCustomerID() {
-        return customerID;
-    }
 
-    public void setCustomerID(Integer customerID) {
-        this.customerID = customerID;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -80,24 +77,26 @@ public class Order {
     public void setId(Integer id) {
         this.id = id;
     }
-
-
-
-    public List<OrderItem> getOrderItem() {
+    public Set<OrderItem> getOrderItem() {
         return orderItem;
     }
 
-    public void setOrderItem(List<OrderItem> orderItem) {
+    public void setOrderItem(Set<OrderItem> orderItem) {
         this.orderItem = orderItem;
     }
+    public Integer getCustomerId() {
+        return customerId;
+    }
 
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
 
-
-    public Integer getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 

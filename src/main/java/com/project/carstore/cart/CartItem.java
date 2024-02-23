@@ -10,9 +10,8 @@ public class CartItem {
     private Integer id;
     private Integer quantity;
     private Integer cartId;
-    @OneToOne
-    private Product product;
-    private Integer price;
+    private Long productId;
+    private Double totalPrice;
 
     public CartItem() {
     }
@@ -41,27 +40,27 @@ public class CartItem {
         this.cartId = cartId;
     }
 
-    public Product getProduct() {
-        return product;
+
+    public Double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-    public CartItem(Integer id, Integer quantity, Integer cartId, Product product, Integer price) {
-        this.id = id;
+    public CartItem( Integer quantity, Integer cartId, Long productId, Double price) {
         this.quantity = quantity;
         this.cartId = cartId;
-        this.product = product;
-        this.price = price;
+        this.productId=productId;
+        this.totalPrice = price;
     }
 }
