@@ -60,7 +60,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public List<Product> getAllProducts() throws ProductException {
-        if(this.productRepository.getAllProducts().isEmpty())
+        if(this.productRepository.findAll().isEmpty())
             throw new ProductException("No product found");
         return this.productRepository.findAll();
     }
@@ -68,23 +68,22 @@ public class ProductServiceImp implements ProductService {
     @Override
     public Product getProductById(Long id) throws ProductException {
         //handle exceptions
-        Product foundProduct=this.productRepository.getProductById(id);
+        Optional<Product> foundProduct=this.productRepository.getProductById(id);
         if(foundProduct==null)
             throw new ProductException("Product not found:"+id);
-        Optional<Product> optionalProduct=productRepository.findById(id);
-        return optionalProduct.orElse(null);
+        return foundProduct.get();
     }
 
     @Override
     public List<Product> getAllProductsByPrice(Double price) throws ProductException {
-        if(this.productRepository.getAllProducts().isEmpty())
+        if(this.productRepository.findAll().isEmpty())
             throw new ProductException("No product found");
         return productRepository.findByPrice(price);
     }
 
     @Override
     public List<Product> getAllProductsByPriceRange(Double min, Double max) throws ProductException {
-        if(this.productRepository.getAllProducts().isEmpty())
+        if(this.productRepository.findAll().isEmpty())
             throw new ProductException("no product found");
         List<Product> allProducts=productRepository.findAll();
         List<Product> productsPriceRange;
@@ -94,21 +93,21 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public List<Product> getAllProductsSortedByPrice( ) throws ProductException {
-        if(this.productRepository.getAllProducts().isEmpty())
+        if(this.productRepository.findAll().isEmpty())
             throw new ProductException("No product found");
         return productRepository.findAllByOrderByPriceAsc();
     }
 
     @Override
     public List<Product> getAllProductsByName(String name) throws ProductException {
-        if(this.productRepository.getAllProducts().isEmpty())
+        if(this.productRepository.findAll().isEmpty())
             throw new ProductException("No product found");
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 
     @Override
     public List<Product> getAllProductsByDescription(String description) throws ProductException {
-        if(this.productRepository.getAllProducts().isEmpty())
+        if(this.productRepository.findAll().isEmpty())
             throw new ProductException("No product found");
         return productRepository.findByDescriptionContainingIgnoreCase(description);
     }
