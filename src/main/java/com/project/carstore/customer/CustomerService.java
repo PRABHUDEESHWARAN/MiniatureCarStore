@@ -1,4 +1,12 @@
 package com.project.carstore.customer;
 
-public class CustomerService {
+import com.project.carstore.order.Order;
+
+import java.util.Optional;
+
+public interface CustomerService {
+    Customer AddCustomerToDb(CustomerDTO customerDTO);
+    Optional<Customer> getCustomerById(Integer id);
+
+    void addOrderToCustomer(Order newOrder);
 }

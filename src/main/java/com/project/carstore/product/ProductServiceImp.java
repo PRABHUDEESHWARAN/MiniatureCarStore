@@ -49,7 +49,7 @@ public class ProductServiceImp implements ProductService {
         }
         // get product from databse using productID
         Optional<Product> findProduct=this.productRepository.findById(productDto.getId());
-        // update the changing
+        findProduct.get().setName(productDto.getName());
         findProduct.get().setPrice(productDto.getPrice());
         findProduct.get().setDescription(productDto.getDescription());
         findProduct.get().setColour(productDto.getColour());

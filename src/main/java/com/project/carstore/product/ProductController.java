@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/product")
@@ -63,11 +64,11 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public Product getProductById(@PathVariable("id") Long productId) throws ProductException
+    public Optional<Product> getProductById(@PathVariable("id") Long productId) throws ProductException
     {
-        Product product=null;
+        Optional<Product> product=null;
         try {
-            product=this.productService.getProductById(productId);
+            product= Optional.ofNullable(this.productService.getProductById(productId));
         } catch (ProductException e) {
             System.out.println(e.getMessage());
         }
