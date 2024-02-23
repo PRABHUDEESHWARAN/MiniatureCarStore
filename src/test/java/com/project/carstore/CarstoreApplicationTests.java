@@ -18,7 +18,4 @@ class CarstoreApplicationTests {
 	@Autowired
 	private ProductService productService;
 
-	ProductService productservice = new ProductServiceImp();
-
-
 }
