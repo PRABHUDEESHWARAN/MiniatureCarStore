@@ -11,24 +11,34 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @OneToOne
+    //    @OneToOne
 //    private Customer customer;
+    private Integer customerId;
     @OneToMany
     private Set<CartItem> cartItems=new HashSet<>();
-    private Integer totalPrice;
+    private Double totalPrice;
     private Integer totalItems;
-    private Integer customerId;
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
 
     public Cart() {
     }
 
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
 
-    public Cart(Integer id, Set<CartItem> cartItems, Integer totalPrice, Integer totalItems, Integer customerId) {
-        this.id = id;
+    public Cart(Integer customerId) {
+        this.customerId=customerId;
+    }
+
+
+    public Cart(Set<CartItem> cartItems, Double totalPrice, Integer totalItems) {
         this.cartItems = cartItems;
         this.totalPrice = totalPrice;
         this.totalItems = totalItems;
-        this.customerId = customerId;
     }
 
     public Integer getId() {
@@ -55,11 +65,11 @@ public class Cart {
         this.cartItems = cartItems;
     }
 
-    public Integer getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -69,13 +79,5 @@ public class Cart {
 
     public void setTotalItems(Integer totalItems) {
         this.totalItems = totalItems;
-    }
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
     }
 }

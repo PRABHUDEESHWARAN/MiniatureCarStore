@@ -1,15 +1,11 @@
 package com.project.carstore.cart;
-import java.math.BigDecimal;
-import java.util.List;
 
+import java.util.Optional;
 
 public interface CartService {
+    public Optional<Cart> getCartById(Integer cartId) throws CartException;
 
-    public Cart removeItemFromCart(Integer cartId, Integer cartItemId);
-    public Cart updateItemQuantity(Integer cartItemId, Integer Quantity);
-    public Cart clearCartItems(Integer cartId);
-    List<CartItem> viewCartItems(Integer cartId);
-    BigDecimal calculateTotalCartValue(Integer cartId);
-    boolean checkoutCart(Integer cartId);
-
+    Integer CreateCartForCustomer(Integer id);
+    public Cart addCartItemToCart(CartItemDTO cartItemDTO);
+    public Optional<CartItem> getCartItemByProductId(Long ProductId);
 }
