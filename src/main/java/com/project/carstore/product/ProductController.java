@@ -17,7 +17,7 @@ public class ProductController {
     private ProductService productService;
     Product product=null;
     @PostMapping("/addProduct")
-    public ResponseEntity<Product> addProductToDb(@RequestBody ProductDTO product)
+    public ResponseEntity<Product> addProductToDb(@RequestBody ProductDTO product) throws ProductException
     {
         Product addedProduct=null;
         try {
@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/deleteProduct/{Id}")
-    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long Id)
+    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long Id) throws ProductException
     {
         Product deletedProduct=null;
         try {
@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PatchMapping("/updateProduct")
-    public ResponseEntity<Product> updateProductInDb(@RequestBody ProductDTO product)
+    public ResponseEntity<Product> updateProductInDb(@RequestBody ProductDTO product) throws ProductException
     {
         Product updatedProduct=null;
         try {
