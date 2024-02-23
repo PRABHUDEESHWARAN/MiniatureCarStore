@@ -17,16 +17,18 @@ public class Cart {
     private Set<CartItem> cartItems=new HashSet<>();
     private Integer totalPrice;
     private Integer totalItems;
+    private Integer customerId;
 
     public Cart() {
     }
 
 
-    public Cart(Integer id, Set<CartItem> cartItems, Integer totalPrice, Integer totalItems) {
+    public Cart(Integer id, Set<CartItem> cartItems, Integer totalPrice, Integer totalItems, Integer customerId) {
         this.id = id;
         this.cartItems = cartItems;
         this.totalPrice = totalPrice;
         this.totalItems = totalItems;
+        this.customerId = customerId;
     }
 
     public Integer getId() {
@@ -67,5 +69,13 @@ public class Cart {
 
     public void setTotalItems(Integer totalItems) {
         this.totalItems = totalItems;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 }

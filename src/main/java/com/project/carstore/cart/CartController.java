@@ -15,19 +15,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/{cartId}/items")
-    public ResponseEntity<?> addItemToCart(@PathVariable Integer cartId, @RequestBody CartItem cartItem) {
-        try {
-            Cart updatedCart = cartService.addItemtoCart(cartId, cartItem);
-            if (updatedCart != null) {
-                return ResponseEntity.ok(updatedCart);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding item to cart: " + e.getMessage());
-        }
-    }
+
 
     @DeleteMapping("/{cartId}/items")
     public ResponseEntity<?> removeItemFromCart(@PathVariable Integer cartId, @RequestBody CartItem cartItem) {
