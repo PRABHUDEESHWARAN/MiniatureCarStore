@@ -1,7 +1,7 @@
 package com.project.carstore.product;
 
 public class ProductDTO {
-    private Long Id;
+   
     private String Name;
     private Double Price;
     private String Description;
@@ -12,8 +12,8 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
-        Id = id;
+    public ProductDTO( String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
+        
         Name = name;
         Price = price;
         Description = description;
