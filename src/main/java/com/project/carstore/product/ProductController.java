@@ -1,7 +1,6 @@
 package com.project.carstore.product;
 
 
-import com.project.carstore.exceptions.ProductException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +28,11 @@ public class ProductController {
     }
 
     @DeleteMapping("/deleteProduct/{Id}")
-    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long Id) throws ProductException
+    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long id) throws ProductException
     {
         Product deletedProduct=null;
         try {
-            deletedProduct=this.productService.deleteProductFromDb(Id);
+            deletedProduct=this.productService.deleteProductFromDb(id);
         } catch (ProductException e) {
             System.out.println(e.getMessage());
         }
