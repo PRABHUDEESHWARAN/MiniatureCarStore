@@ -1,13 +1,21 @@
 package com.project.carstore.customer;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Address {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer addressId;
     private Integer CustomerId;
+    @Column(name = "DoorNo",nullable = false)
+    private Integer doorNo;
+    @Column(name = "City",nullable = false,length = 30)
+    private String city;
+    @Column(name = "Pincode",nullable = false,length = 6)
+    private Integer pincode;
+    @Column(name = "State",nullable = false,length = 30)
+    private String state;
 
     public Integer getCustomerId() {
         return CustomerId;
@@ -17,11 +25,11 @@ public class Address {
         CustomerId = customerId;
     }
 
-    public String getDoorNo() {
+    public Integer getDoorNo() {
         return doorNo;
     }
 
-    public void setDoorNo(String doorNo) {
+    public void setDoorNo(Integer doorNo) {
         this.doorNo = doorNo;
     }
 
@@ -49,7 +57,7 @@ public class Address {
         this.state = state;
     }
 
-    public Address(Integer customerId, String doorNo, String city, Integer pincode, String state) {
+    public Address(Integer customerId, Integer doorNo, String city, Integer pincode, String state) {
         CustomerId = customerId;
         this.doorNo = doorNo;
         this.city = city;
@@ -57,14 +65,7 @@ public class Address {
         this.state = state;
     }
 
-    @Column(name = "DoorNo",nullable = false,length = 3)
-    private String doorNo;
-    @Column(name = "City",nullable = false,length = 30)
-    private String city;
-    @Column(name = "Pincode",nullable = false,length = 6)
-    private Integer pincode;
-    @Column(name = "State",nullable = false,length = 30)
-    private String state;
+
 
     public Address() {
     }

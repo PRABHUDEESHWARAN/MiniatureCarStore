@@ -8,9 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/cart/")
 public class CartController {
-    @PostMapping("/addCartItem")
-    public Cart addCartItem(@RequestBody Cart cart)
-    {
-        return null;
-    }
 }
