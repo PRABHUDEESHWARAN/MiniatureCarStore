@@ -13,7 +13,7 @@ public class ProductServiceImp implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Product addProductToDb(ProductDTO product) throws ProductException {
+    public Product addProductToDb(Product product) throws ProductException {
         //handle exception here
         if(product==null)
         {
@@ -41,67 +41,52 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product updateProductInDb(ProductDTO product) throws ProductException {
+    public Product updateProductInDb(ProductDTO productDto) throws ProductException {
         //handle exceptions
-        if(product==null)
+        if(productDto==null)
         {
             throw new ProductException("Product cannot be null");
         }
-        Product ProductToBeUpdated=new Product( product.getName(), product.getPrice(), product.getDescription(), product.getImageUrl(), product.getColour(), product.getQuantity());
-        if(this.productRepository.existsById(ProductToBeUpdated.getId()))
-        {
-            return this.productRepository.save(ProductToBeUpdated);
-        }else{
-            throw new ProductException("No Product  exist with Id:"+ProductToBeUpdated.getId());
-        }
+        // get product from databse using productID
+        Optional<Product> findProduct=this.productRepository.findById(productDto.getId());
+        // update the changing
+        findProduct.get().setPrice(productDto.getPrice());
+        findProduct.get().setDescription(productDto.getDescription());
+        findProduct.get().setColour(productDto.getColour());
+        findProduct.get().setImageUrl(productDto.getImageUrl());
+        findProduct.get().setQuantity(productDto.getQuantity());
+        //save the product object to database
+        return this.productRepository.save(findProduct.get());
     }
 
     @Override
     public List<Product> getAllProducts() throws ProductException {
         if(this.productRepository.findAll().isEmpty())
-<<<<<<< HEAD
             throw new ProductException("No Product Found");
-=======
-            throw new ProductException("No product found");
->>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         return this.productRepository.findAll();
     }
 
     @Override
     public Product getProductById(Long id) throws ProductException {
         //handle exceptions
-<<<<<<< HEAD
         Optional<Product> foundProduct=this.productRepository.findById(id);
         if(foundProduct==null)
             throw new ProductException("Product not found:"+id);
 
-=======
-        Optional<Product> foundProduct=this.productRepository.getProductById(id);
-        if(foundProduct==null)
-            throw new ProductException("Product not found:"+id);
->>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         return foundProduct.get();
     }
 
     @Override
     public List<Product> getAllProductsByPrice(Double price) throws ProductException {
         if(this.productRepository.findAll().isEmpty())
-<<<<<<< HEAD
             throw new ProductException("Product not found");
-=======
-            throw new ProductException("No product found");
->>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         return productRepository.findByPrice(price);
     }
 
     @Override
     public List<Product> getAllProductsByPriceRange(Double min, Double max) throws ProductException {
         if(this.productRepository.findAll().isEmpty())
-<<<<<<< HEAD
             throw new ProductException("No product found");
-=======
-            throw new ProductException("no product found");
->>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
         List<Product> allProducts=productRepository.findAll();
         List<Product> productsPriceRange;
         productsPriceRange = allProducts.stream().filter(product->product.getPrice() >=min && product.getPrice() <=max).collect(Collectors.toList());

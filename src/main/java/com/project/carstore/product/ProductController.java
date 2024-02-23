@@ -16,11 +16,7 @@ public class ProductController {
     private ProductService productService;
     Product product=null;
     @PostMapping("/addProduct")
-<<<<<<< HEAD
-    public ResponseEntity<Product> addProductToDb(@RequestBody ProductDTO product)throws ProductException
-=======
-    public ResponseEntity<Product> addProductToDb(@RequestBody ProductDTO product) throws ProductException
->>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
+    public ResponseEntity<Product> addProductToDb(@RequestBody Product product)throws ProductException
     {
         Product addedProduct=null;
         try {
@@ -32,11 +28,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/deleteProduct/{Id}")
-<<<<<<< HEAD
     public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long id) throws ProductException
-=======
-    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long Id) throws ProductException
->>>>>>> b1158df34438c58e145bd05676dbe8fe3e09ef15
     {
         Product deletedProduct=null;
         try {
