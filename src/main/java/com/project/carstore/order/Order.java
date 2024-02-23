@@ -2,39 +2,48 @@ package com.project.carstore.order;
 
 import com.project.carstore.customer.Address;
 import com.project.carstore.customer.Customer;
+import com.project.carstore.customer.CustomerDTO;
+import com.project.carstore.payment.CardInfo;
 import com.project.carstore.payment.PaymentDetails;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-@Component
+
 
 @Entity
+@Table(name="OrderTable")
+
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @ManyToOne
-//   private Customer customer;
+
     private Integer customerID;
     private String firstName;
     private String LastName;
 
-    @OneToMany
+    @OneToMany(cascade =CascadeType.ALL)
     private List<OrderItem> orderItem=new ArrayList<>();
 
     private Integer totalPrice;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PaymentDetails paymentDetails;
     private String orderStatus;
     private Integer totalItems;
+    @OneToOne(cascade = CascadeType.ALL)
+    private CardInfo cardInfo;
+
+
+
 
 
     public Order() {
@@ -48,6 +57,9 @@ public class Order {
         this.orderItem = orderItem;
         this.paymentDetails = paymentDetails;
     }
+
+
+
 
     public Integer getCustomerID() {
         return customerID;
@@ -149,5 +161,11 @@ public class Order {
         this.totalItems = totalItems;
     }
 
+    public CardInfo getCardInfo() {
+        return cardInfo;
+    }
 
+    public void setCardInfo(CardInfo cardInfo) {
+        this.cardInfo = cardInfo;
+    }
 }

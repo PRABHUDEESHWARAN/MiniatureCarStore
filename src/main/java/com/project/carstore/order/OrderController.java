@@ -18,7 +18,7 @@ public class OrderController {
     private OrderService orderService;
     @PostMapping("createOrder")
     public Order createOrder(@RequestBody OrderDto orderDto) throws OrderException {
-        return this.orderService.createOrder(orderDto.getCustomerDTO(),orderDto.getOrderItems(),orderDto.getPaymentDetails());
+        return this.orderService.createOrder(orderDto);
   }
 
     @GetMapping("getOrder")

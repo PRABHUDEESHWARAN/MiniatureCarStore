@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-    Order createOrder(CustomerDTO customerDto, List<OrderItem> orderItems, PaymentDetails paymentDetails) throws OrderException;
+    Order createOrder( OrderDto orderDto) throws OrderException;
     List<Order> addOrderToCustomerOrdersList(Order newOrder) throws OrderException;
     Order getOrderById(Integer id) throws OrderException;
     Order deleteOrderById(Integer id);

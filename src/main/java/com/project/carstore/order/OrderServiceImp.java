@@ -31,18 +31,18 @@ public class OrderServiceImp implements OrderService{
 
 
     @Override
-    public Order createOrder(CustomerDTO customerDto, List<OrderItem> orderItems, PaymentDetails paymentDetails) throws OrderException {
+    public Order createOrder(OrderDto orderDto) throws OrderException {
 
         Order newOrder=null;
-        if(customerDto.getId()==null)
+        if(orderDto.getCustomerDTO().getId()==null)
         {
             throw new OrderException("customer doesn't exist");
         }
-        if(orderItems.isEmpty())
+        if(orderDto.getOrderItems().isEmpty())
         {
             throw new OrderException("you should order some items");
         }
-        newOrder=new Order(customerDto.getId(),customerDto.getFirstname(),customerDto.getLastname(),orderItems,paymentDetails);
+        newOrder=new Order(orderDto.getCustomerDTO().getId(),orderDto.getCustomerDTO().getFirstname(),orderDto.getCustomerDTO().getLastname(),orderDto.getOrderItems(),orderDto.getPaymentDetails());
 
         return this.orderRepository.save(newOrder);
 
