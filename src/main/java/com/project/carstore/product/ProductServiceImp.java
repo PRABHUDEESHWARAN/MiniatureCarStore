@@ -1,6 +1,5 @@
 package com.project.carstore.product;
 
-import com.project.carstore.exceptions.ProductException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService {
-
     @Autowired
     private ProductRepository productRepository;
 
@@ -43,25 +41,28 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product updateProductInDb(ProductDTO product) throws ProductException {
+    public Product updateProductInDb(ProductDTO productDto) throws ProductException {
         //handle exceptions
-        if(product==null)
+        if(productDto==null)
         {
             throw new ProductException("Product cannot be null");
         }
-        Product ProductToBeUpdated=new Product( product.getName(), product.getPrice(), product.getDescription(), product.getImageUrl(), product.getColour(), product.getQuantity());
-        if(this.productRepository.existsById(ProductToBeUpdated.getId()))
-        {
-            return this.productRepository.save(ProductToBeUpdated);
-        }else{
-            throw new ProductException("No Product  exist with Id:"+ProductToBeUpdated.getId());
-        }
+        // get product from databse using productID
+        Optional<Product> findProduct=this.productRepository.findById(productDto.getId());
+        findProduct.get().setName(productDto.getName());
+        findProduct.get().setPrice(productDto.getPrice());
+        findProduct.get().setDescription(productDto.getDescription());
+        findProduct.get().setColour(productDto.getColour());
+        findProduct.get().setImageUrl(productDto.getImageUrl());
+        findProduct.get().setQuantity(productDto.getQuantity());
+        //save the product object to database
+        return this.productRepository.save(findProduct.get());
     }
 
     @Override
     public List<Product> getAllProducts() throws ProductException {
         if(this.productRepository.findAll().isEmpty())
-            throw new ProductException("No product found");
+            throw new ProductException("No Product Found");
         return this.productRepository.findAll();
     }
 
@@ -85,7 +86,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<Product> getAllProductsByPriceRange(Double min, Double max) throws ProductException {
         if(this.productRepository.findAll().isEmpty())
-            throw new ProductException("no product found");
+            throw new ProductException("No product found");
         List<Product> allProducts=productRepository.findAll();
         List<Product> productsPriceRange;
         productsPriceRange = allProducts.stream().filter(product->product.getPrice() >=min && product.getPrice() <=max).collect(Collectors.toList());

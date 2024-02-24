@@ -1,5 +1,6 @@
 package com.project.carstore.payment;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -14,7 +15,7 @@ public class PaymentDetails {
     private Integer orderId;
     private Boolean status;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CardInfo> cardInfo;
 
 
