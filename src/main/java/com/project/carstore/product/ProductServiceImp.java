@@ -70,7 +70,7 @@ public class ProductServiceImp implements ProductService {
     public Product getProductById(Long id) throws ProductException {
         //handle exceptions
         Optional<Product> foundProduct=this.productRepository.findById(id);
-        if(foundProduct==null)
+        if(foundProduct.isEmpty())
             throw new ProductException("Product not found:"+id);
 
         return foundProduct.get();
@@ -79,7 +79,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<Product> getAllProductsByPrice(Double price) throws ProductException {
         if(this.productRepository.findAll().isEmpty())
-            throw new ProductException("Product not found");
+            throw new ProductException("No product found");
         return productRepository.findByPrice(price);
     }
 
