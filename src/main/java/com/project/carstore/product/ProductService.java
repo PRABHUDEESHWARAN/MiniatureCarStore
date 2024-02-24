@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    public Product addProductToDb(Product product) throws ProductException;
+    public Product addProductToDb(ProductDTO product) throws ProductException;
     public Product deleteProductFromDb(Long id) throws ProductException;
     public Product updateProductInDb(ProductDTO productDto) throws ProductException;
     Product getProductById(Long id) throws ProductException;
