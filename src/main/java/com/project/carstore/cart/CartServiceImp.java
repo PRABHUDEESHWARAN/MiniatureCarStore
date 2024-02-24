@@ -95,17 +95,13 @@ public class CartServiceImp implements CartService{
 
     @Override
     public Cart clearCart(Integer cartId) throws CartException {
-        if(this.cartRepository.existsById(cartId))
-        {
-            Cart cart = cartRepository.findById(cartId);
-            if (cart != null){
-                cart.getCartItems().clear();
-                cart.setTotalItems(0);
-                cart.setTotalPrice(0.0);
-                return this.cartRepository.save(cart);
+        Optional<Cart> findCart = cartRepository.findById(cartId);
+            if (findCart.isPresent()){
+                findCart.get().getCartItems().clear();
+                findCart.get().setTotalItems(0);
+                findCart.get().setTotalPrice(0.0);
+                return this.cartRepository.save(findCart.get());
             }else throw new CartException("Cart is already null");
-
-        }else throw new CartException("No cart exist with Id:"+cartId);
 
     }
 
