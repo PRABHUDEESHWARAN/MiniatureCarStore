@@ -13,7 +13,7 @@ public class ProductServiceImp implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Product addProductToDb(Product product) throws ProductException {
+    public Product addProductToDb(ProductDTO product) throws ProductException {
         //handle exception here
         if(product==null)
         {
