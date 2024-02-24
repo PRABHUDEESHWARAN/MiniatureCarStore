@@ -5,6 +5,8 @@ import com.project.carstore.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -79,5 +81,83 @@ public class CartServiceImp implements CartService{
     @Override
     public Optional<CartItem> getCartItemByProductId(Long productId) {
         return this.cartItemRepository.findCartItemByProductId(productId);
+    }
+
+    @Override
+    public Cart getCustomerCart(Integer customerId) throws CartException{
+        Optional<Cart> optionalCart = cartRepository.findByCustomerId(customerId);
+        if (optionalCart.isPresent()){
+            return optionalCart.get();
+        }
+        else throw new CartException("Cart does not exist");
+
+    }
+
+    @Override
+    public Cart clearCart(Integer cartId) throws CartException {
+        if(this.cartRepository.existsById(cartId))
+        {
+            Cart cart = cartRepository.findById(cartId);
+            if (cart != null){
+                cart.getCartItems().clear();
+                cart.setTotalItems(0);
+                cart.setTotalPrice(0.0);
+                return this.cartRepository.save(cart);
+            }else throw new CartException("Cart is already null");
+
+        }else throw new CartException("No cart exist with Id:"+cartId);
+
+    }
+
+    @Override
+    public Cart checkOut() {
+
+
+
+        return null;
+    }
+
+    @Override
+    public Cart updateCartItem(Integer cartItemId, CartItem updatedCartItem) {
+
+
+
+
+
+        return null;
+    }
+
+    @Override
+    public Cart removeCartItem(Integer cartItemId) throws CartException{
+            Optional<Cart> optionalCart = cartRepository.findByCartItem(cartItemId);
+            if (optionalCart.isPresent()){
+                Cart cart = optionalCart.get();
+                Set<CartItem> cartItems = cart.getCartItems();
+                Optional<CartItem> optionalCartItem = cartItems.stream().filter(item -> item.getId().equals(cartItemId)).findFirst();
+                if (optionalCartItem.isPresent()){
+                    cartItems.remove(optionalCartItem.get());
+                    return this.cartRepository.save(cart);
+                }else throw new CartException("Cart Item not found");
+
+            } else throw new CartException("Cart not found");
+
+    }
+
+    @Override
+    public List<CartItem> getAllCartItems(Integer cartId) throws CartException{
+        Optional<Cart> optionalCart = cartRepository.findById(cartId);
+        if (optionalCart.isPresent()){
+            Cart cart = optionalCart.get();
+            return new ArrayList<>(cart.getCartItems());
+        }
+        else throw new CartException("Cart id does not exist");
+
+    }
+
+    @Override
+    public CartItem getCartItemById(Integer cartItemId) {
+
+
+        return null;
     }
 }
