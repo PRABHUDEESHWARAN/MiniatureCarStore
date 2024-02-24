@@ -43,19 +43,46 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product updateProductInDb(ProductDTO product) throws ProductException {
+    public Product updateProductInDb(UpdateProductDTO productDetails) throws ProductException {
         //handle exceptions
-        if(product==null)
+        Long productId= productDetails.getProductId();
+        if(productId==null)
         {
-            throw new ProductException("Product cannot be null");
+            throw new ProductException("Product ID cannot be null");
         }
-        Product ProductToBeUpdated=new Product( product.getName(), product.getPrice(), product.getDescription(), product.getImageUrl(), product.getColour(), product.getQuantity());
-        if(this.productRepository.existsById(ProductToBeUpdated.getId()))
+        Optional<Product> findProduct=this.productRepository.findById(productId);
+        if(findProduct.isPresent())
         {
-            return this.productRepository.save(ProductToBeUpdated);
-        }else{
-            throw new ProductException("No Product  exist with Id:"+ProductToBeUpdated.getId());
+            //set color
+            if(productDetails.getColour()!=null)
+            {
+                findProduct.get().setColour(productDetails.getColour());
+            }
+            //set price
+            if(productDetails.getPrice()!=null)
+            {
+                findProduct.get().setPrice(productDetails.getPrice());
+            }
+            //set des
+            if(productDetails.getDescription()!=null)
+            {
+                findProduct.get().setDescription(productDetails.getDescription());
+            }
+            //set qty
+            if(productDetails.getQuantity()!=null)
+            {
+                findProduct.get().setQuantity(productDetails.getQuantity());
+            }
+            //set url
+            if(productDetails.getImageUrl()!=null)
+            {
+                findProduct.get().setImageUrl(productDetails.getImageUrl());
+            }
+            return this.productRepository.save(findProduct.get());
+        }else {
+            throw new ProductException("No product exist with Id:"+productDetails.getProductId());
         }
+
     }
 
     @Override
@@ -66,13 +93,13 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product getProductById(Long id) throws ProductException {
+    public Optional<Product> getProductById(Long id) throws ProductException {
         //handle exceptions
         Optional<Product> foundProduct=this.productRepository.findById(id);
         if(foundProduct.isEmpty())
             throw new ProductException("Product not found:"+id);
 
-        return foundProduct.get();
+        return foundProduct;
     }
 
     @Override

@@ -41,11 +41,11 @@ public class ProductController {
     }
 
     @PatchMapping("/updateProduct")
-    public ResponseEntity<Product> updateProductInDb(@RequestBody ProductDTO product)
+    public ResponseEntity<Product> updateProductInDb(@RequestBody UpdateProductDTO productDetails)
     {
         Product updatedProduct=null;
         try {
-            updatedProduct=this.productService.updateProductInDb(product);
+            updatedProduct=this.productService.updateProductInDb(productDetails);
         } catch (ProductException e) {
             System.out.println(e.getMessage());
         }
@@ -65,7 +65,7 @@ public class ProductController {
     public Product getProductById(@PathVariable("id") Long productId) throws ProductException {
         Product product=null;
         try {
-            product=this.productService.getProductById(productId);
+            product=this.productService.getProductById(productId).get();
         } catch (ProductException e) {
             System.out.println(e.getMessage());
         }
@@ -117,6 +117,12 @@ public class ProductController {
             System.out.println(e.getMessage());
         }
         return new ResponseEntity<>(products,HttpStatus.OK);
+    }
+    @GetMapping("/get-product-by-price/{price}")
+    public ResponseEntity<List<Product>> getAllProductsByPrice(@PathVariable("price") Double price) throws ProductException{
+        List<Product> productsList=null;
+        productsList=this.productService.getAllProductsByPrice(price);
+        return new ResponseEntity<>(productsList,HttpStatus.OK);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.project.carstore.cart;
 
+import com.project.carstore.exceptions.ProductException;
 import com.project.carstore.product.Product;
 import com.project.carstore.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,12 @@ public class CartServiceImp implements CartService{
         // prepare cartItemSet to add it to cart
         Set<CartItem> cartItemSet=cart.get().getCartItems();
         //get the product
-        Optional<Product> findProduct = this.productService.getProductById(cartItemDTO.getProductId());
+        Optional<Product> findProduct = null;
+        try {
+            findProduct = this.productService.getProductById(cartItemDTO.getProductId());
+        } catch (ProductException e) {
+            System.out.println(e.getMessage());
+        }
         //check if product already in cart
         Optional<CartItem> findCartItemByPId = getCartItemByProductId(cartItemDTO.getProductId());
         if (findCartItemByPId.isPresent()) {
