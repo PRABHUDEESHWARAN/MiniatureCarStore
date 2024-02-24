@@ -131,17 +131,7 @@ public class CartServiceImp implements CartService{
 
     @Override
     public Cart removeCartItem(Integer cartItemId) throws CartException{
-            Optional<Cart> optionalCart = cartRepository.findByCartItem(cartItemId);
-            if (optionalCart.isPresent()){
-                Cart cart = optionalCart.get();
-                Set<CartItem> cartItems = cart.getCartItems();
-                Optional<CartItem> optionalCartItem = cartItems.stream().filter(item -> item.getId().equals(cartItemId)).findFirst();
-                if (optionalCartItem.isPresent()){
-                    cartItems.remove(optionalCartItem.get());
-                    return this.cartRepository.save(cart);
-                }else throw new CartException("Cart Item not found");
-
-            } else throw new CartException("Cart not found");
+            return null;
 
     }
 
@@ -158,8 +148,6 @@ public class CartServiceImp implements CartService{
 
     @Override
     public CartItem getCartItemById(Integer cartItemId) {
-
-
         return null;
     }
 }
