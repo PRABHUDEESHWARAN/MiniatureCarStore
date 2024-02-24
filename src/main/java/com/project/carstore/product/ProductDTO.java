@@ -6,9 +6,20 @@ public class ProductDTO {
     private Double Price;
     private String Description;
     private String ImageUrl;
+    private String Colour;
     private Integer Quantity;
 
     public ProductDTO() {
+    }
+
+    public ProductDTO(Long id, String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
+        Id = id;
+        Name = name;
+        Price = price;
+        Description = description;
+        ImageUrl = imageUrl;
+        Colour = colour;
+        Quantity = quantity;
     }
 
     public Long getId() {
@@ -51,20 +62,19 @@ public class ProductDTO {
         ImageUrl = imageUrl;
     }
 
+    public String getColour() {
+        return Colour;
+    }
+
+    public void setColour(String colour) {
+        Colour = colour;
+    }
+
     public Integer getQuantity() {
         return Quantity;
     }
 
     public void setQuantity(Integer quantity) {
-        Quantity = quantity;
-    }
-
-    public ProductDTO(Long id, String name, Double price, String description, String imageUrl, Integer quantity) {
-        Id = id;
-        Name = name;
-        Price = price;
-        Description = description;
-        ImageUrl = imageUrl;
         Quantity = quantity;
     }
 }

@@ -6,81 +6,92 @@ import jakarta.persistence.*;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
 
     @Column(nullable = false,length = 100)
-    private String Name;
+    private String name;
 
     @Column(nullable = false)
-    private Double Price;
+    private Double price;
 
     @Column(nullable = false,length = 1000)
-    private String Description;
+    private String description;
 
     @Column(nullable = false)
-    private String ImageUrl;
+    private String imageUrl;
+
+    @Column(nullable = false,length = 15)
+    private String colour;
 
     @Column(nullable = false)
-    private Integer Quantity;
+    private Integer quantity;
 
     public Product() {
     }
 
-    public Product( String name, Double price, String description, String imageUrl, Integer quantity) {
-
-        Name = name;
-        Price = price;
-        Description = description;
-        ImageUrl = imageUrl;
-        Quantity = quantity;
+    public Product( String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.colour = colour;
+        this.quantity = quantity;
     }
 
-    public long getId() {
-        return Id;
+    public Long getId() {
+        return id;
     }
 
-    public void setId(long id) {
-        Id = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public Double getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(Double price) {
-        Price = price;
+        this.price = price;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public String getImageUrl() {
-        return ImageUrl;
+        return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
-        ImageUrl = imageUrl;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public Integer getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(Integer quantity) {
-        Quantity = quantity;
+        this.quantity = quantity;
     }
 }
