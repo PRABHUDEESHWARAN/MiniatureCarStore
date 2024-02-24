@@ -1,73 +1,63 @@
 package com.project.carstore.order;
 
 import com.project.carstore.customer.Address;
-import com.project.carstore.customer.Customer;
-import com.project.carstore.customer.CustomerDTO;
-import com.project.carstore.payment.CardInfo;
 import com.project.carstore.payment.PaymentDetails;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
-@Table(name="OrderTable")
-
+@Table(name = "OrderTable")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer customerID;
+    @Column(nullable = false)
+    private Integer customerId;
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String LastName;
 
-    @OneToMany(cascade =CascadeType.ALL)
-    private List<OrderItem> orderItem=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<OrderItem> orderItem=new HashSet<>();
 
-    private Integer totalPrice;
+    private Double totalPrice;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
+    public Set<OrderItem> getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(Set<OrderItem> orderItem) {
+        this.orderItem = orderItem;
+    }
+
     @OneToOne(cascade = CascadeType.ALL)
     private PaymentDetails paymentDetails;
     private String orderStatus;
     private Integer totalItems;
-    @OneToOne(cascade = CascadeType.ALL)
-    private CardInfo cardInfo;
-
-
-
 
 
     public Order() {
     }
 
-    public Order( Integer customerID, String firstName, String lastName, List<OrderItem> orderItem, PaymentDetails paymentDetails) {
+    public Order( Integer customerId, String firstName, String lastName) {
 
-        this.customerID = customerID;
+        this.customerId = customerId;
         this.firstName = firstName;
         LastName = lastName;
-        this.orderItem = orderItem;
-        this.paymentDetails = paymentDetails;
+
     }
 
 
-
-
-    public Integer getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(Integer customerID) {
-        this.customerID = customerID;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -93,23 +83,19 @@ public class Order {
         this.id = id;
     }
 
-
-
-    public List<OrderItem> getOrderItem() {
-        return orderItem;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setOrderItem(List<OrderItem> orderItem) {
-        this.orderItem = orderItem;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
-
-
-    public Integer getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -161,11 +147,5 @@ public class Order {
         this.totalItems = totalItems;
     }
 
-    public CardInfo getCardInfo() {
-        return cardInfo;
-    }
 
-    public void setCardInfo(CardInfo cardInfo) {
-        this.cardInfo = cardInfo;
-    }
 }

@@ -6,37 +6,27 @@ import com.project.carstore.payment.PaymentDetails;
 import java.util.List;
 
 public class OrderDto {
-    private CustomerDTO customerDTO;
-    private List<OrderItem> orderItems;
-    private PaymentDetails paymentDetails;
+    private Integer customerId;
+    private Integer paymentId;
 
-    public OrderDto(CustomerDTO customerDTO, List<OrderItem> orderItems, PaymentDetails paymentDetails) {
-        this.customerDTO = customerDTO;
-        this.orderItems = orderItems;
-        this.paymentDetails = paymentDetails;
+    public OrderDto(Integer customerId, Integer paymentId) {
+        this.customerId = customerId;
+        this.paymentId = paymentId;
     }
 
-    public CustomerDTO getCustomerDTO() {
-        return customerDTO;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerDTO(CustomerDTO customerDTO) {
-        this.customerDTO = customerDTO;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public Integer getPaymentId() {
+        return paymentId;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public PaymentDetails getPaymentDetails() {
-        return paymentDetails;
-    }
-
-    public void setPaymentDetails(PaymentDetails paymentDetails) {
-        this.paymentDetails = paymentDetails;
+    public void setPaymentId(Integer paymentId) {
+        this.paymentId = paymentId;
     }
 }

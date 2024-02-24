@@ -13,17 +13,29 @@ public class Cart {
     private Integer id;
 //    @OneToOne
 //    private Customer customer;
+    private Integer customerId;
     @OneToMany
     private Set<CartItem> cartItems=new HashSet<>();
-    private Integer totalPrice;
+    private Double totalPrice;
     private Integer totalItems;
+
+    public Integer getCustomerId() {
+        return customerId;
+    }
 
     public Cart() {
     }
 
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
 
-    public Cart(Integer id, Set<CartItem> cartItems, Integer totalPrice, Integer totalItems) {
-        this.id = id;
+    public Cart(Integer customerId) {
+        this.customerId=customerId;
+    }
+
+
+    public Cart(Set<CartItem> cartItems, Double totalPrice, Integer totalItems) {
         this.cartItems = cartItems;
         this.totalPrice = totalPrice;
         this.totalItems = totalItems;
@@ -53,11 +65,11 @@ public class Cart {
         this.cartItems = cartItems;
     }
 
-    public Integer getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 

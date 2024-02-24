@@ -1,29 +1,13 @@
 package com.project.carstore.customer;
 
 public class CustomerDTO {
-    private Integer id;
+
     private String firstname;
     private String lastname;
     private String email;
     private String password;
     private Integer mobileNo;
-    private Address address;
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -69,13 +53,13 @@ public class CustomerDTO {
     }
 
 
-    public CustomerDTO(Integer id, String firstname, String lastname, String email, String password, Integer mobileNo, Address address) {
-        this.id = id;
+
+    public CustomerDTO( String firstname, String lastname, String email, String password, Integer mobileNo) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.mobileNo = mobileNo;
-        this.address = address;
+
     }
 }

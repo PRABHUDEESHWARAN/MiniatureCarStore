@@ -1,12 +1,12 @@
 package com.project.carstore.customer;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Address {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer addressId;
     private Integer CustomerId;
     @Column(name = "DoorNo",nullable = false)
     private Integer doorNo;

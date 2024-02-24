@@ -1,17 +1,25 @@
 package com.project.carstore.order;
 
+
+import com.project.carstore.cart.Cart;
+import com.project.carstore.cart.CartException;
+import com.project.carstore.cart.CartItem;
+import com.project.carstore.cart.CartService;
 import com.project.carstore.customer.Address;
+import com.project.carstore.customer.AddressRepository;
 import com.project.carstore.customer.Customer;
-import com.project.carstore.customer.CustomerDTO;
 import com.project.carstore.customer.CustomerService;
 import com.project.carstore.payment.PaymentDetails;
 
+import com.project.carstore.payment.PaymentRepository;
+import com.project.carstore.payment.PaymentService;
+import com.project.carstore.product.ProductRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -20,10 +28,21 @@ public class OrderServiceImp implements OrderService{
 
     @Autowired
     private OrderRepository orderRepository;
-
-
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private AddressRepository addressRepository;
+
 
 
 
@@ -31,125 +50,218 @@ public class OrderServiceImp implements OrderService{
 
 
     @Override
-    public Order createOrder(OrderDto orderDto) throws OrderException {
+    public Order createOrder(Integer customerId) throws OrderException {
 
-        Order newOrder=null;
-        if(orderDto.getCustomerDTO().getId()==null)
+        //get the customer with customer id
+        Optional<Customer> findCustomer = this.customerService.getCustomerById(customerId);
+        Optional<Cart> findCart=Optional.empty();
+        Order newOrder=new Order(customerId,findCustomer.get().getFirstname(),findCustomer.get().getLastname());
+        this.orderRepository.save(newOrder);
+        if(findCustomer.isEmpty())
         {
-            throw new OrderException("customer doesn't exist");
+            throw new OrderException("Customer Id cant be null");
         }
-        if(orderDto.getOrderItems().isEmpty())
+        //get the cart with help of cartId with customer
+        try {
+             findCart=this.cartService.getCartById(findCustomer.get().getCartId());
+        } catch (CartException e) {
+            System.out.println(e.getMessage());
+        }
+        //Add the cart items to the order as orderitems by creating orderItem also save the orderitems in orderitems table
+        Set<OrderItem> orderItemsToBeAdded=new HashSet<>();
+        for(CartItem cartItem:findCart.get().getCartItems())
         {
-            throw new OrderException("you should order some items");
+            OrderItem newOrderItem=new OrderItem(cartItem.getProductId(),cartItem.getQuantity(),cartItem.getTotalPrice(), newOrder.getId());
+            orderItemsToBeAdded.add(newOrderItem);
         }
-        newOrder=new Order(orderDto.getCustomerDTO().getId(),orderDto.getCustomerDTO().getFirstname(),orderDto.getCustomerDTO().getLastname(),orderDto.getOrderItems(),orderDto.getPaymentDetails());
+        this.orderItemRepository.saveAll(orderItemsToBeAdded);
+        //set remaining values for neworder
+        newOrder.setOrderItem(orderItemsToBeAdded);
+        newOrder.setTotalItems(orderItemsToBeAdded.size());
+        newOrder.setTotalPrice(0.0);
+        System.out.println("came till here");
+        orderItemsToBeAdded.stream().map(p->p.getTotalPrice()).forEach(p->newOrder.setTotalPrice(newOrder.getTotalPrice()+p));
+        newOrder.setOrderStatus("Pending");
+        newOrder.setOrderDate(LocalDate.now());
+        newOrder.setDeliveryDate(LocalDate.now().plusDays(7));
 
-        return this.orderRepository.save(newOrder);
-
+        //save order to the order repo
+        this.orderRepository.save(newOrder);
+        //add the order to the customer order list
+        this.customerService.addOrderToCustomer(newOrder);
+        return newOrder;
 
     }
 
-    @Override
-    public List<Order> addOrderToCustomerOrdersList(Order newOrder) throws OrderException {
-        if(newOrder.getId()==null)
-        {
-            throw new OrderException("order need to be created");
-        }
-        Optional<Customer> customerOptional=this.customerService.getCustomerById(newOrder.getCustomerID());
-       if(customerOptional.isPresent())
-       {
-           customerOptional.get().getCustomerOrders().add(newOrder);
-       }
 
-      return customerOptional.get().getCustomerOrders();
-    }
 
     @Override
-    public Order getOrderById(Integer id) throws OrderException {
-        if(id == 0)
+    public Order getOrderById(Integer orderId) throws OrderException {
+        if(orderId == 0)
         {
             throw new OrderException("Order should be exist");
         }
-        return this.orderRepository.findById(id).get();
+        Optional<Order> orderOptional=this.orderRepository.findById(orderId);
+        if(orderOptional.isPresent()) {
+            return orderOptional.get();
+        }
+        else
+        {
+            throw new OrderException("order is not exist");
+        }
     }
 
     @Override
-    public Order deleteOrderById(Integer id) {
-       Optional<Order> orderOpt=this.orderRepository.findById(id);
-       this.orderRepository.deleteById(id);
+    public Order cancelOrderById(Integer orderId) throws OrderException {
+      Optional<Order> orderOpt=this.orderRepository.findById(orderId);
+
+       if(orderOpt.isPresent()) {
+           orderOpt.get().setOrderStatus("cancelled");
+           this.orderRepository.save(orderOpt.get());
+           Optional<Customer> customer=this.customerService.getCustomerById(orderOpt.get().getCustomerId());
+           if(customer!=null)
+           {
+               customer.get().getCustomerOrders().remove(orderOpt.get());
+               this.orderRepository.save(orderOpt.get());
+           }
+       }
+       else
+       {
+           throw new OrderException("No order exist with the orderId to cancel");
+       }
        return orderOpt.get();
     }
 
     @Override
-    public Order updateOrder(Order newOrder) {
-       return this.orderRepository.save(newOrder);
-
-    }
-
-
-    @Override
-    public Integer getTotalPrices(List<OrderItem> orderItems) throws OrderException {
-        if(orderItems.isEmpty())
+    public  Address addAddressToOrder(Integer orderID, Address newAddress) throws OrderException {
+        if(orderID==null)
         {
-            throw  new OrderException("no item exist");
+            throw new OrderException("order should exist before adding address");
         }
-        Integer totalPrice=0;
-        for (OrderItem orderItem : orderItems) {
-            totalPrice += orderItem.getPrice();
-        }
-        return totalPrice;
-    }
-
-    @Override
-    public LocalDate getOrderDate() {
-        return LocalDate.now();
-    }
-
-    @Override
-    public Boolean paymentStatus(PaymentDetails paymentDetails) throws OrderException {
-        if(paymentDetails.getOrderId()==null)
+        if(newAddress==null)
         {
-            throw new OrderException("order is not exist to check the status");
+            throw new OrderException("please provide some address");
         }
-        return paymentDetails.getStatus();
+        Optional<Order> orderOptional=this.orderRepository.findById(orderID);
+        orderOptional.get().setAddress(newAddress);
+        return this.addressRepository.save(newAddress);
     }
 
     @Override
-    public String getOrderStatusById(Integer id) throws OrderException {
-        if(this.getOrderById(id)==null)
+    public Address getAddressByOrderId(Integer orderId) throws OrderException {
+        if(orderId==null)
         {
-            throw new OrderException("order is not exist");
+            throw new OrderException("Order not found");
         }
-
-         return this.getOrderById(id).getOrderStatus();
+        else
+        {
+            Optional<Order> orderOptional=this.orderRepository.findById(orderId);
+            if(orderOptional.isEmpty())
+            {
+                throw new OrderException("order not found");
+            }
+            return orderOptional.get().getAddress();
+        }
     }
 
     @Override
-    public LocalDate getDeliveryDateByOrderId(Order order) throws OrderException {
-        if(order==null)
+    public List<Order> getOrdersByDate(LocalDate startDate, LocalDate endDate) throws OrderException {
+        if(startDate==null||endDate==null)
         {
-            throw new OrderException("order should be exist");
+            throw new OrderException("Dates shouldn't be null");
         }
-        LocalDate orderDate=order.getOrderDate();
-        return orderDate.plusDays(7);
+        return this.orderRepository.findByOrderDateBetween(startDate, endDate);
+
     }
 
     @Override
-    public Integer getTotalNumberOfItems(List<OrderItem> orderItems) throws OrderException {
-        if(orderItems.isEmpty())
+    public Double getTotalPrice(Integer orderId) throws OrderException {
+        Optional<Order> orderOptional=this.orderRepository.findById(orderId);
+
+        if(orderOptional.isEmpty())
         {
-            throw new OrderException("no item exists");
+            throw new OrderException("order not found");
         }
-        return orderItems.size();
+        List<OrderItem> orderItems=new ArrayList<>(orderOptional.get().getOrderItem());
+        Double totalAmount=0.0;
+
+        for(int i=0;i<orderItems.size();i++)
+        {
+            totalAmount+=orderItems.get(i).getTotalPrice();
+        }
+         orderOptional.get().setTotalPrice(totalAmount);
+
+
+        return totalAmount;
     }
 
     @Override
-    public Boolean checkAvailabilityOfOrderItem(Order order) {
-        if(order.getId()==null)
+    public Order updatePaymentDetailsByOrderId(Integer orderId, PaymentDetails newPaymentDetails) throws OrderException {
+        Optional<Order> order=null;
+        if(orderId==null)
         {
-            return false;
+            throw new OrderException("order not found");
         }
-        return true;
+        this.paymentRepository.save(newPaymentDetails);
+        order=this.orderRepository.findById(orderId);
+        order.get().setPaymentDetails(newPaymentDetails);
+       Order newOrder=order.orElse(null);
+       this.orderRepository.save(newOrder);
+       return newOrder;
+
+    }
+
+    @Override
+    public Order updateDeliveryDateByOrderId(Integer orderId, LocalDate newDeliveryDate) throws OrderException {
+        Optional<Order> orderOptional=this.orderRepository.findById(orderId);
+        if(orderOptional.isEmpty())
+        {
+            throw new OrderException("order not found");
+        }
+        orderOptional.get().setDeliveryDate(newDeliveryDate);
+        Order newOrder=orderOptional.orElse(null);
+        this.orderRepository.save(newOrder);
+        return newOrder;
+
+    }
+
+
+
+    @Override
+    public List<Order> getOrdersByCustomerId(Integer customerId) throws OrderException {
+
+
+        Optional<Customer> customerOptional=this.customerService.getCustomerById(customerId);
+       if(customerOptional.isEmpty())
+       {
+           throw new OrderException("No customer found with the provided id");
+       }
+       return customerOptional.get().getCustomerOrders();
+
+
+    }
+
+    @Override
+    public Order updateOrderStatus(Integer orderId, String orderStatus) throws OrderException {
+        Optional<Order> orderOptional=this.orderRepository.findById(orderId);
+        if(orderOptional.isEmpty())
+        {
+            throw new OrderException("order not found");
+        }
+        orderOptional.get().setOrderStatus(orderStatus);
+        Order newOrder=orderOptional.orElse(null);
+        this.orderRepository.save(newOrder);
+        return newOrder;
+
+    }
+
+    @Override
+    public List<Order> getOrdersByStatus(String orderStatus) throws OrderException {
+        if(orderStatus==null)
+        {
+            throw new OrderException("orderstatus shouldnt be empty");
+        }
+        return this.orderRepository.findByOrderStatus(orderStatus);
     }
 
 
