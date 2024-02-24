@@ -1,30 +1,19 @@
 package com.project.carstore.product;
 
-public class ProductDTO {
-    private String Name;
+public class UpdateProductDTO {
+    private Long productId;
     private Double Price;
     private String Description;
     private String ImageUrl;
     private String Colour;
     private Integer Quantity;
 
-    public ProductDTO() {
+    public Long getProductId() {
+        return productId;
     }
 
-    public ProductDTO(String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
-        Name = name;
-        Price = price;
-        Description = description;
-        ImageUrl = imageUrl;
-        Colour = colour;
-        Quantity = quantity;
-    }
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Double getPrice() {
@@ -64,6 +53,15 @@ public class ProductDTO {
     }
 
     public void setQuantity(Integer quantity) {
+        Quantity = quantity;
+    }
+
+    public UpdateProductDTO(Long productId, Double price, String description, String imageUrl, String colour, Integer quantity) {
+        this.productId = productId;
+        Price = price;
+        Description = description;
+        ImageUrl = imageUrl;
+        Colour = colour;
         Quantity = quantity;
     }
 }

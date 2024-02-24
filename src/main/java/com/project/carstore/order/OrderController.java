@@ -1,15 +1,11 @@
 package com.project.carstore.order;
 
-import com.project.carstore.customer.Address;
-import com.project.carstore.customer.Customer;
-import com.project.carstore.customer.CustomerDTO;
 import com.project.carstore.payment.PaymentDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 

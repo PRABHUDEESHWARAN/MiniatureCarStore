@@ -1,12 +1,12 @@
 package com.project.carstore.customer;
 
-public class CustomerDTO {
+public class CustomerDto {
 
     private String firstname;
     private String lastname;
     private String email;
     private String password;
-    private Integer mobileNo;
+    private Long mobileNo;
 
 
     public String getFirstname() {
@@ -41,20 +41,20 @@ public class CustomerDTO {
         this.password = password;
     }
 
-    public Integer getMobileNo() {
+    public Long getMobileNo() {
         return mobileNo;
     }
 
-    public void setMobileNo(Integer mobileNo) {
+    public void setMobileNo(Long mobileNo) {
         this.mobileNo = mobileNo;
     }
 
-    public CustomerDTO() {
+    public CustomerDto() {
     }
 
 
 
-    public CustomerDTO( String firstname, String lastname, String email, String password, Integer mobileNo) {
+    public CustomerDto(String firstname, String lastname, String email, String password, Long mobileNo) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
