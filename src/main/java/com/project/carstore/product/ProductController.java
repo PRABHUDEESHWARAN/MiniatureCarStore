@@ -17,7 +17,7 @@ public class ProductController {
     private ProductService productService;
     Product product=null;
     @PostMapping("/addProduct")
-    public ResponseEntity<Product> addProductToDb(@RequestBody Product product)throws ProductException
+    public ResponseEntity<Product> addProductToDb(@RequestBody ProductDTO product)throws ProductException
     {
         Product addedProduct=null;
         try {
