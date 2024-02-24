@@ -1,28 +1,26 @@
 package com.project.carstore.customer;
 
-import jakarta.persistence.*;
-
-@Entity
-public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer addressId;
-    private Integer CustomerId;
-    @Column(name = "DoorNo",nullable = false)
+public class AddressDto {
+    private Integer customerId;
     private Integer doorNo;
-    @Column(name = "City",nullable = false,length = 30)
     private String city;
-    @Column(name = "Pincode",nullable = false,length = 6)
     private Integer pincode;
-    @Column(name = "State",nullable = false,length = 30)
     private String state;
 
+    public AddressDto(Integer customerId, Integer doorNo, String city, Integer pincode, String state) {
+        this.customerId = customerId;
+        this.doorNo = doorNo;
+        this.city = city;
+        this.pincode = pincode;
+        this.state = state;
+    }
+
     public Integer getCustomerId() {
-        return CustomerId;
+        return customerId;
     }
 
     public void setCustomerId(Integer customerId) {
-        CustomerId = customerId;
+        this.customerId = customerId;
     }
 
     public Integer getDoorNo() {
@@ -56,19 +54,4 @@ public class Address {
     public void setState(String state) {
         this.state = state;
     }
-
-    public Address(Integer customerId, Integer doorNo, String city, Integer pincode, String state) {
-        CustomerId = customerId;
-        this.doorNo = doorNo;
-        this.city = city;
-        this.pincode = pincode;
-        this.state = state;
-    }
-
-
-
-    public Address() {
-    }
-
-
 }

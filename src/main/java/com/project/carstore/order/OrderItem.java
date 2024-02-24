@@ -1,30 +1,32 @@
 package com.project.carstore.order;
 
 import com.project.carstore.product.Product;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class OrderItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    private Product product;
+//    @OneToOne(cascade = CascadeType.MERGE)
+//    private Product product;
+    private Long ProductId;
     private Integer quantity;
-    private Integer price;
+    private Double totalPrice;
     private Integer orderId;
 
     public OrderItem() {
     }
 
-    public OrderItem(Integer id, Product product, Integer quantity, Integer price, Integer orderId) {
-        this.id = id;
-        this.product = product;
+    public OrderItem(Long productId, Integer quantity, Double price, Integer orderId) {
+        this.ProductId = productId;
         this.quantity = quantity;
-        this.price = price;
+        this.totalPrice = price;
         this.orderId = orderId;
+    }
+
+    public OrderItem(Product product, int quantity) {
     }
 
     public Integer getId() {
@@ -35,12 +37,20 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public Long getProductId() {
+        return ProductId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Long productId) {
+        ProductId = productId;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Integer getQuantity() {
@@ -50,15 +60,6 @@ public class OrderItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
     public Integer getOrderId() {
         return orderId;
     }

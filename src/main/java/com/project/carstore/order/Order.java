@@ -4,50 +4,70 @@ import com.project.carstore.customer.Address;
 import com.project.carstore.customer.Customer;
 import com.project.carstore.payment.PaymentDetails;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 
 @Entity
+@Table(name = "OrderTable")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
-    private Customer customer;
 
-    @OneToMany
-    private List<OrderItem> orderItem=new ArrayList<>();
-    private String paymentStatus;
-    private Integer totalPrice;
+    @Column(nullable = false)
+    private Integer customerId;
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String LastName;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<OrderItem> orderItem=new HashSet<>();
+
+    private Double totalPrice;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     @OneToOne
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PaymentDetails paymentDetails;
-    private Boolean orderStatus;
+    private String orderStatus;
     private Integer totalItems;
-    private LocalDate createdAt;
+
 
     public Order() {
     }
 
-    public Order(Integer id, Customer customer, List<OrderItem> orderItem, String paymentStatus, Integer totalPrice, LocalDate orderDate, LocalDate deliveryDate, Address address, PaymentDetails paymentDetails, Boolean orderStatus, Integer totalItems, LocalDate createdAt) {
-        this.id = id;
-        this.customer = customer;
-        this.orderItem = orderItem;
-        this.paymentStatus = paymentStatus;
-        this.totalPrice = totalPrice;
-        this.orderDate = orderDate;
-        this.deliveryDate = deliveryDate;
-        this.address = address;
-        this.paymentDetails = paymentDetails;
-        this.orderStatus = orderStatus;
-        this.totalItems = totalItems;
-        this.createdAt = createdAt;
+    public Order( Integer customerId, String firstName, String lastName) {
+
+        this.customerId = customerId;
+        this.firstName = firstName;
+        LastName = lastName;
+
+    }
+
+
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 
     public Integer getId() {
@@ -57,36 +77,26 @@ public class Order {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public List<OrderItem> getOrderItem() {
+    public Set<OrderItem> getOrderItem() {
         return orderItem;
     }
 
-    public void setOrderItem(List<OrderItem> orderItem) {
+    public void setOrderItem(Set<OrderItem> orderItem) {
         this.orderItem = orderItem;
     }
-
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
-    public Integer getTotalPrice() {
+    public Double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -122,11 +132,11 @@ public class Order {
         this.paymentDetails = paymentDetails;
     }
 
-    public Boolean getOrderStatus() {
+    public String getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(Boolean orderStatus) {
+    public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -138,11 +148,5 @@ public class Order {
         this.totalItems = totalItems;
     }
 
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
 
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
 }
