@@ -1,5 +1,6 @@
 package com.project.carstore.customer;
 
+import com.project.carstore.cart.CartException;
 import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.order.Order;
 
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
-    Customer AddCustomerToDb(CustomerDto customerDTO) throws CustomerException;
+    Customer AddCustomerToDb(CustomerDto customerDTO) throws CustomerException, CartException;
     Optional<Customer> getCustomerById(Integer id) throws CustomerException;
 
     void addOrderToCustomer(Order newOrder) throws CustomerException;

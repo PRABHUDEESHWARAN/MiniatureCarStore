@@ -1,5 +1,8 @@
 package com.project.carstore.cart;
 
+import com.project.carstore.customer.Customer;
+import com.project.carstore.customer.CustomerRepository;
+import com.project.carstore.customer.CustomerService;
 import com.project.carstore.exceptions.ProductException;
 import com.project.carstore.product.Product;
 import com.project.carstore.product.ProductService;
@@ -20,6 +23,8 @@ public class CartServiceImp implements CartService{
     private ProductService productService;
     @Autowired
     private CartItemRepository cartItemRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Override
     public Optional<Cart> getCartById(Integer cartId) throws CartException {
@@ -40,9 +45,9 @@ public class CartServiceImp implements CartService{
     }
 
     @Override
-    public Cart addCartItemToCart(CartItemDTO cartItemDTO) {
+    public Cart addCartItemToCart(CartItemDTO cartItemDTO) throws CartException {
         //productId , CustomerId
-        // values for cartItem : quantity ,Totalprice ,cartId,productId
+        // values for cartItem : quantity ,Total price ,cartId,productId
         //get Customer
         //Optional<Customer> findCustomer = this.customerService.getCustomerById(cartItemDTO.getCustomerId());
         //get Cart
@@ -65,16 +70,20 @@ public class CartServiceImp implements CartService{
         Optional<CartItem> findCartItemByPId = getCartItemByProductId(cartItemDTO.getProductId());
         if (findCartItemByPId.isPresent()) {
             Integer quantity = findCartItemByPId.get().getQuantity();
-            findCartItemByPId.get().setQuantity(quantity + 1);
-            Double totalPrice = findCartItemByPId.get().getTotalPrice();
-            findCartItemByPId.get().setTotalPrice(totalPrice + findProduct.get().getPrice());
-            this.cartItemRepository.save(findCartItemByPId.get());
-            cartItemSet.add(findCartItemByPId.get());
+            if(findProduct.get().getQuantity()>0) {
+                findCartItemByPId.get().setQuantity(quantity + 1);
+                Double totalPrice = findCartItemByPId.get().getTotalPrice();
+                findCartItemByPId.get().setTotalPrice(totalPrice + findProduct.get().getPrice());
+                this.cartItemRepository.save(findCartItemByPId.get());
+                cartItemSet.add(findCartItemByPId.get());
+            }else throw new CartException("Insufficient Product Stock");
         } else {
             //create CartItem
-            CartItem cartItem = new CartItem(1, cartItemDTO.getCartId(), cartItemDTO.getProductId(), findProduct.get().getPrice());
-            this.cartItemRepository.save(cartItem);
-            cartItemSet.add(cartItem);
+            if(findProduct.get().getQuantity()>0) {
+                CartItem cartItem = new CartItem(1, cartItemDTO.getCartId(), cartItemDTO.getProductId(), findProduct.get().getPrice());
+                this.cartItemRepository.save(cartItem);
+                cartItemSet.add(cartItem);
+            }else throw new CartException("Insufficient Product Stock");
         }
         //  add cartItem to cart and save Cart
         cart.get().setCartItems(cartItemSet);
@@ -88,29 +97,40 @@ public class CartServiceImp implements CartService{
     public Optional<CartItem> getCartItemByProductId(Long productId) {
         return this.cartItemRepository.findCartItemByProductId(productId);
     }
-
     @Override
-    public Cart getCustomerCart(Integer customerId) throws CartException{
-        Optional<Cart> optionalCart = cartRepository.findByCustomerId(customerId);
-        if (optionalCart.isPresent()){
-            return optionalCart.get();
+    public Optional<Cart> getCartByCustomerId(Integer customerId) throws CartException{
+        Optional<Customer> findCustomer= this.customerRepository.findById(customerId);
+        if(findCustomer.isPresent())
+        {
+            Integer cartId=findCustomer.get().getCartId();
+            Optional<Cart> findCart=this.getCartById(cartId);
+            if(findCart.isPresent())
+            {
+                return findCart;
+            }
+            else throw new CartException("No cart exist with Id:"+cartId);
         }
-        else throw new CartException("Cart does not exist");
-
+        else throw new CartException("No customer exist with Id:"+customerId);
     }
-
     @Override
-    public Cart clearCart(Integer cartId) throws CartException {
-        Optional<Cart> findCart = cartRepository.findById(cartId);
+    public String clearCart(Integer customerId) throws CartException {
+        Optional<Customer> findCustomer=this.customerRepository.findById(customerId);
+        if(findCustomer.isPresent())
+        {
+            Optional<Cart> findCart=this.getCartById(findCustomer.get().getCartId());
             if (findCart.isPresent()){
-                findCart.get().getCartItems().clear();
+                //clear cartItems from cartItem Repository
+                Set<CartItem> cartItemList=findCart.get().getCartItems();
+                this.cartItemRepository.deleteAll(cartItemList);
+                cartItemList.clear();
+                findCart.get().setCartItems(cartItemList);
                 findCart.get().setTotalItems(0);
                 findCart.get().setTotalPrice(0.0);
-                return this.cartRepository.save(findCart.get());
-            }else throw new CartException("Cart is already null");
-
+                this.cartRepository.save(findCart.get());
+                return "Cart Cleared Successfully for Customer:"+String.valueOf(customerId);
+            }else throw new CartException("Cart does not exist for Customer:"+customerId);
+        }else throw new CartException("No customer exist with Id:"+customerId);
     }
-
     @Override
     public Cart checkOut() {
 
@@ -118,36 +138,66 @@ public class CartServiceImp implements CartService{
 
         return null;
     }
-
     @Override
-    public Cart updateCartItem(Integer cartItemId, CartItem updatedCartItem) {
-
-
-
-
-
-        return null;
+    public Cart updateCartItem(UpdateCartItemDTO updateCartItemDTO) throws CartException, ProductException {
+        // get cart using cart id
+        Optional<Cart> findCart= this.getCartById(updateCartItemDTO.getCartId());
+        if(findCart.isPresent())
+        {
+            Optional<CartItem> findCartItem =this.getCartItemById(updateCartItemDTO.getCartItemId());
+            Optional<Product> findProduct=this.productService.getProductById(findCartItem.get().getProductId());
+            if(findCartItem.isPresent())
+            {
+                if(updateCartItemDTO.getNewQuantity()!=0 && updateCartItemDTO.getNewQuantity()!=null && findProduct.get().getQuantity()>=updateCartItemDTO.getNewQuantity()) {
+                    findCartItem.get().setQuantity(updateCartItemDTO.getNewQuantity());
+                    Double productPrice;
+                    if(findProduct.isPresent())
+                    {
+                        productPrice=findProduct.get().getPrice();
+                    } else throw new ProductException("Cant get Product Price");
+                    findCartItem.get().setTotalPrice(findCartItem.get().getQuantity()*productPrice);
+                    this.cartItemRepository.save(findCartItem.get());
+                    Set<CartItem> cartItemSet=findCart.get().getCartItems();
+                    cartItemSet.add(findCartItem.get());
+                    findCart.get().setCartItems(cartItemSet);
+                    return this.cartRepository.save(findCart.get());
+                } else throw new CartException("Invalid Quantity or Insufficient Stock:"+updateCartItemDTO.getNewQuantity());
+            } else throw new CartException("CartItem does not exist for cartItemId: "+updateCartItemDTO.getCartItemId());
+        } else throw new CartException("Cart does not exist for CartId: "+updateCartItemDTO.getCartId());
     }
-
     @Override
-    public Cart removeCartItem(Integer cartItemId) throws CartException{
-            return null;
+    public String removeCartItem(Integer cartItemId) throws CartException{
+            Optional<CartItem> findCartItem=this.getCartItemById(cartItemId);
+            if(findCartItem.isPresent())
+            {
+                Optional<Cart> findCart=this.getCartById(findCartItem.get().getCartId());
+                if(findCart.isPresent())
+                {
+                    //remove cartItem from cart
+                    findCart.get().getCartItems().remove(findCartItem.get());
+                    this.cartRepository.save(findCart.get());
+                    this.cartItemRepository.delete(findCartItem.get());
+                    return "cart Item Removed Successfully";
+                }else throw new CartException("Cart does not exist for cartId: "+findCartItem.get().getCartId());
+            }else throw new CartException("CartItem does not exist for cartItemId: "+cartItemId);
+    }
+    @Override
+    public Set<CartItem> getAllCartItems(Integer cartId) throws CartException{
+        Optional<Cart> findCart = cartRepository.findById(cartId);
+        if(findCart.isPresent()){
+            return findCart.get().getCartItems();
+        }else throw new CartException("Cart id does not exist");
 
     }
-
     @Override
-    public List<CartItem> getAllCartItems(Integer cartId) throws CartException{
-        Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        if (optionalCart.isPresent()){
-            Cart cart = optionalCart.get();
-            return new ArrayList<>(cart.getCartItems());
-        }
-        else throw new CartException("Cart id does not exist");
-
+    public Optional<CartItem> getCartItemById(Integer cartItemId) {
+        return this.cartItemRepository.findById(cartItemId);
     }
-
     @Override
-    public CartItem getCartItemById(Integer cartItemId) {
-        return null;
+    public Double getCartTotal(Integer cartId) throws CartException{
+        Optional<Cart> findCart = cartRepository.findById(cartId);
+        if(findCart.isPresent()){
+            return findCart.get().getTotalPrice();
+        }else throw new CartException("No cart present for the cart Id");
     }
 }

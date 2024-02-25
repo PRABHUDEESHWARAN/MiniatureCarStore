@@ -1,5 +1,6 @@
 package com.project.carstore.customer;
 
+import com.project.carstore.cart.CartException;
 import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,7 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
     @PostMapping("/createCustomer")
-    public Customer CreateCustomer(@RequestBody CustomerDto customerDTO) throws CustomerException
-    {
+    public Customer CreateCustomer(@RequestBody CustomerDto customerDTO) throws CustomerException, CartException {
         Customer customer=null;
         customer=this.customerService.AddCustomerToDb(customerDTO);
         return customer;

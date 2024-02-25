@@ -14,7 +14,7 @@ public class Cart {
     //    @OneToOne
 //    private Customer customer;
     private Integer customerId;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> cartItems=new HashSet<>();
     private Double totalPrice;
     private Integer totalItems;
