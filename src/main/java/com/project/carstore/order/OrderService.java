@@ -1,21 +1,24 @@
 package com.project.carstore.order;
 
+import com.project.carstore.cart.CartException;
 import com.project.carstore.customer.Address;
+import com.project.carstore.customer.AddressDto;
 import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.payment.PaymentDetails;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderService {
-    Order createOrder(Integer customerId) throws OrderException;
+    ResponseEntity<StockValidationResponse> createOrder(Integer customerId) throws OrderException, CustomerException, CartException;
 
     Order getOrderById(Integer orderId) throws OrderException;
-    Order cancelOrderById(Integer orderId) throws OrderException, CustomerException;
+    Order closeOrderById(Integer orderId) throws OrderException, CustomerException;
 
-    Address addAddressToOrder(Integer orderID,Address newAddress ) throws OrderException;
+    ResponseEntity<Order> addAddressToOrder(Integer orderID, AddressDto newAddress ) throws OrderException, CustomerException;
     Address getAddressByOrderId(Integer orderId) throws OrderException;
     List<Order> getOrdersByDate(LocalDate startDate,LocalDate endDate) throws OrderException;
     List<Order> getOrdersByCustomerId(Integer customerId) throws OrderException, CustomerException;
