@@ -1,10 +1,5 @@
 package com.project.carstore.order;
 
-import com.project.carstore.customer.CustomerDTO;
-import com.project.carstore.payment.PaymentDetails;
-
-import java.util.List;
-
 public class OrderDto {
     private Integer customerId;
     private Integer paymentId;

@@ -9,12 +9,12 @@ import com.project.carstore.customer.Address;
 import com.project.carstore.customer.AddressRepository;
 import com.project.carstore.customer.Customer;
 import com.project.carstore.customer.CustomerService;
+import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.payment.PaymentDetails;
 
 import com.project.carstore.payment.PaymentRepository;
 import com.project.carstore.payment.PaymentService;
 import com.project.carstore.product.ProductRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +53,12 @@ public class OrderServiceImp implements OrderService{
     public Order createOrder(Integer customerId) throws OrderException {
 
         //get the customer with customer id
-        Optional<Customer> findCustomer = this.customerService.getCustomerById(customerId);
+        Optional<Customer> findCustomer = null;
+        try {
+            findCustomer = this.customerService.getCustomerById(customerId);
+        } catch (CustomerException e) {
+            System.out.println(e.getMessage());
+        }
         Optional<Cart> findCart=Optional.empty();
         Order newOrder=new Order(customerId,findCustomer.get().getFirstname(),findCustomer.get().getLastname());
         this.orderRepository.save(newOrder);
@@ -88,7 +93,11 @@ public class OrderServiceImp implements OrderService{
         //save order to the order repo
         this.orderRepository.save(newOrder);
         //add the order to the customer order list
-        this.customerService.addOrderToCustomer(newOrder);
+        try {
+            this.customerService.addOrderToCustomer(newOrder);
+        } catch (CustomerException e) {
+            System.out.println(e.getMessage());
+        }
         return newOrder;
 
     }

@@ -27,12 +27,21 @@ public class Customer {
     @Column(name = "password",nullable = false,length = 15)
     private String password;
 
-    @Column(name = "MobileNumber",nullable = false,length = 10)
-    private Integer mobileNo;
+    @Column(name = "MobileNo",nullable = false,length = 10)
+    private Long mobileNo;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> address=new ArrayList<>();
 
     private Integer cartId;
+    private Boolean isLoggedIn=false;
+
+    public Boolean getLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(Boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
 
     public String getPassword() {
         return password;
@@ -62,7 +71,7 @@ public class Customer {
         CustomerOrders = customerOrders;
     }
 
-    public Customer(String firstname, String lastname, String email, String password, Integer mobileNo) {
+    public Customer(String firstname, String lastname, String email, String password, Long mobileNo) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -106,11 +115,11 @@ public class Customer {
         this.email = email;
     }
 
-    public Integer getMobileNo() {
+    public Long getMobileNo() {
         return mobileNo;
     }
 
-    public void setMobileNo(Integer mobileNo) {
+    public void setMobileNo(Long mobileNo) {
         this.mobileNo = mobileNo;
     }
 
