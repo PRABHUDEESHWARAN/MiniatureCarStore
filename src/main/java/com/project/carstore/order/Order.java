@@ -1,13 +1,10 @@
 package com.project.carstore.order;
 
 import com.project.carstore.customer.Address;
-import com.project.carstore.customer.Customer;
 import com.project.carstore.payment.PaymentDetails;
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -32,8 +29,16 @@ public class Order {
     private Double totalPrice;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+
+    public Set<OrderItem> getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(Set<OrderItem> orderItem) {
+        this.orderItem = orderItem;
+    }
 
     @OneToOne(cascade = CascadeType.ALL)
     private PaymentDetails paymentDetails;
@@ -77,13 +82,7 @@ public class Order {
     public void setId(Integer id) {
         this.id = id;
     }
-    public Set<OrderItem> getOrderItem() {
-        return orderItem;
-    }
 
-    public void setOrderItem(Set<OrderItem> orderItem) {
-        this.orderItem = orderItem;
-    }
     public Integer getCustomerId() {
         return customerId;
     }
