@@ -121,7 +121,7 @@ public class OrderServiceImp implements OrderService{
     }
 
     @Override
-    public Order cancelOrderById(Integer orderId) throws OrderException {
+    public Order cancelOrderById(Integer orderId) throws OrderException, CustomerException {
       Optional<Order> orderOpt=this.orderRepository.findById(orderId);
 
        if(orderOpt.isPresent()) {
@@ -237,7 +237,7 @@ public class OrderServiceImp implements OrderService{
 
 
     @Override
-    public List<Order> getOrdersByCustomerId(Integer customerId) throws OrderException {
+    public List<Order> getOrdersByCustomerId(Integer customerId) throws OrderException, CustomerException {
 
 
         Optional<Customer> customerOptional=this.customerService.getCustomerById(customerId);
