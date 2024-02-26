@@ -9,7 +9,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @OneToOne(cascade = CascadeType.MERGE)
+    //    @OneToOne(cascade = CascadeType.MERGE)
 //    private Product product;
     private Long ProductId;
     private Integer quantity;

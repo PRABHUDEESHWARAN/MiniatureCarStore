@@ -1,9 +1,9 @@
 package com.project.carstore.cart;
 
 public class CartItemDTO {
-private Long productId;
-private Integer customerId;
-private Integer cartId;
+    private Long productId;
+    private Integer customerId;
+    private Integer cartId;
 
     public CartItemDTO(Long productId, Integer customerId, Integer cartId) {
         this.productId = productId;

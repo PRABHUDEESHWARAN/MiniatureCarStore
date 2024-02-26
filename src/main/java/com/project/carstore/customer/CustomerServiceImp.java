@@ -1,5 +1,6 @@
 package com.project.carstore.customer;
 
+import com.project.carstore.cart.CartException;
 import com.project.carstore.cart.CartRepository;
 import com.project.carstore.cart.CartService;
 import com.project.carstore.exceptions.CustomerException;
@@ -23,7 +24,7 @@ public class CustomerServiceImp implements CustomerService
     private CartService cartService;
 
     @Override
-    public Customer AddCustomerToDb(CustomerDto customerDTO) throws CustomerException{
+    public Customer AddCustomerToDb(CustomerDto customerDTO) throws CustomerException, CartException {
 
         Customer newCustomer =new Customer(customerDTO.getFirstname(),customerDTO.getLastname(),customerDTO.getEmail(),customerDTO.getPassword(),customerDTO.getMobileNo());
         newCustomer=this.customerRepository.save(newCustomer);
