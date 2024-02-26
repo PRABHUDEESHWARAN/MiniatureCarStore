@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
     ResponseEntity<StockValidationResponse> createOrder(Integer customerId) throws OrderException, CustomerException, CartException;
 
-    Order getOrderById(Integer orderId) throws OrderException;
+    Optional<Order> getOrderById(Integer orderId) throws OrderException;
     Order closeOrderById(Integer orderId) throws OrderException, CustomerException;
 
     ResponseEntity<Order> addAddressToOrder(Integer orderID, AddressDto newAddress ) throws OrderException, CustomerException;
@@ -32,6 +33,5 @@ public interface OrderService {
     Order updateDeliveryDateByOrderId(Integer orderId,LocalDate newDeliveryDate) throws OrderException;
 
 
-
-
+    ResponseEntity<Order> confirmOrder(ConfirmOrderReq confirmOrderReq) throws OrderException;
 }

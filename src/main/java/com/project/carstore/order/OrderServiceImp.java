@@ -13,6 +13,8 @@ import com.project.carstore.payment.PaymentRepository;
 import com.project.carstore.payment.PaymentService;
 import com.project.carstore.product.Product;
 import com.project.carstore.product.ProductRepository;
+import org.aspectj.weaver.ast.Or;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,35 +27,27 @@ import java.util.*;
 @Service
 
 public class OrderServiceImp implements OrderService{
-
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
-    ProductRepository productRepository;
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
-    @Autowired
-    private PaymentService paymentService;
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private AddressRepository addressRepository;
-    private CustomerRepository customerRepository;
-    public OrderServiceImp(CustomerRepository customerRepository)
+    private final OrderRepository orderRepository;
+    private final CustomerService customerService;
+    private final ProductRepository productRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final PaymentRepository paymentRepository;
+    private final PaymentService paymentService;
+    private final CartService cartService;
+    private final AddressRepository addressRepository;
+    private final CustomerRepository customerRepository;
+    public OrderServiceImp(CustomerRepository customerRepository, OrderRepository orderRepository, CustomerService customerService, ProductRepository productRepository, OrderItemRepository orderItemRepository, PaymentRepository paymentRepository, PaymentService paymentService, CartService cartService, AddressRepository addressRepository)
     {
         this.customerRepository=customerRepository;
+        this.orderRepository = orderRepository;
+        this.customerService = customerService;
+        this.productRepository = productRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.paymentRepository = paymentRepository;
+        this.paymentService = paymentService;
+        this.cartService = cartService;
+        this.addressRepository = addressRepository;
     }
-
-
-
-
-
-
-
     @Override
     public ResponseEntity<StockValidationResponse> createOrder(Integer customerId) throws OrderException, CustomerException, CartException {
 
@@ -121,25 +115,21 @@ public class OrderServiceImp implements OrderService{
         this.cartService.clearCart(customerId);
         return  new ResponseEntity<StockValidationResponse>(new StockValidationResponse(newOrder,stockIssues),HttpStatus.ACCEPTED);
     }
-
-
-
     @Override
-    public Order getOrderById(Integer orderId) throws OrderException {
+    public Optional<Order> getOrderById(Integer orderId) throws OrderException {
         if(orderId ==null || orderId==0)
         {
             throw new OrderException("Invalid OrderId:"+orderId);
         }
         Optional<Order> orderOptional=this.orderRepository.findById(orderId);
         if(orderOptional.isPresent()) {
-            return orderOptional.get();
+            return orderOptional;
         }
         else
         {
             throw new OrderException("order does not exist for Id:"+orderId);
         }
     }
-
     @Override
     public Order closeOrderById(Integer orderId) throws OrderException, CustomerException {
       Optional<Order> findOrder=this.orderRepository.findById(orderId);
@@ -149,9 +139,9 @@ public class OrderServiceImp implements OrderService{
            Optional<Customer> findCustomer=this.customerService.getCustomerById(findOrder.get().getCustomerId());
            if(findCustomer.isPresent())
            {
-               List<Order> customerOrder =findCustomer.get().getCustomerOrders();
-               customerOrder.remove(findOrder.get());
-               findCustomer.get().setCustomerOrders(customerOrder);
+               List<Order> customerOrdersList =findCustomer.get().getCustomerOrders();
+               customerOrdersList.remove(findOrder.get());
+               findCustomer.get().setCustomerOrders(customerOrdersList);
                this.customerRepository.save(findCustomer.get());
                return findOrder.get();
            }else throw new CustomerException("Customer does not exist with Id:"+findOrder.get().getCustomerId());
@@ -161,7 +151,6 @@ public class OrderServiceImp implements OrderService{
            throw new OrderException("No order exist with the orderId to cancel");
        }
     }
-
     @Override
     public  ResponseEntity<Order> addAddressToOrder(Integer orderId,AddressDto newAddress) throws OrderException, CustomerException {
         Optional<Order>findOrder=this.orderRepository.findById(orderId);
@@ -173,7 +162,6 @@ public class OrderServiceImp implements OrderService{
         }else throw new OrderException("Order does not exist with Id:"+orderId);
         return new ResponseEntity<Order>(findOrder.get(),HttpStatus.ACCEPTED);
     }
-
     @Override
     public Address getAddressByOrderId(Integer orderId) throws OrderException {
         Optional<Order> findOrder=this.orderRepository.findById(orderId);
@@ -182,7 +170,6 @@ public class OrderServiceImp implements OrderService{
             return findOrder.get().getAddress();
         }else throw new OrderException("Order does not exist with Id:"+orderId);
     }
-
     @Override
     public List<Order> getOrdersByDate(LocalDate startDate, LocalDate endDate) throws OrderException {
         if(startDate==null||endDate==null)
@@ -192,7 +179,6 @@ public class OrderServiceImp implements OrderService{
         return this.orderRepository.findByOrderDateBetween(startDate, endDate);
 
     }
-
     @Override
     public Double getTotalPrice(Integer orderId) throws OrderException {
         Optional<Order> findOrder=this.orderRepository.findById(orderId);
@@ -203,7 +189,6 @@ public class OrderServiceImp implements OrderService{
         }
         return findOrder.get().getTotalPrice();
     }
-
     @Override
     public Order updatePaymentDetailsByOrderId(Integer orderId, PaymentDetails newPaymentDetails) throws OrderException {
         Optional<Order> order=null;
@@ -219,7 +204,6 @@ public class OrderServiceImp implements OrderService{
        return newOrder;
 
     }
-
     @Override
     public Order updateDeliveryDateByOrderId(Integer orderId, LocalDate newDeliveryDate) throws OrderException {
         Optional<Order> findOrder=this.orderRepository.findById(orderId);
@@ -229,6 +213,20 @@ public class OrderServiceImp implements OrderService{
         }
         findOrder.get().setDeliveryDate(newDeliveryDate);
         return this.orderRepository.save(findOrder.get());
+    }
+    @Override
+    public ResponseEntity<Order> confirmOrder(@NotNull ConfirmOrderReq confirmOrderReq) throws OrderException {
+        Optional<Order> findOrder=this.orderRepository.findById(confirmOrderReq.getOrderId());
+        if(findOrder.isPresent())
+        {
+            findOrder.get().setTransactionId(confirmOrderReq.getTransactionId());
+            findOrder.get().setOrderStatus("Paid");
+            findOrder.get().setOrderDate(LocalDate.now());
+            LocalDate orderDate=findOrder.get().getOrderDate();
+            findOrder.get().setDeliveryDate(orderDate.plusDays(3));
+            this.orderRepository.save(findOrder.get());
+            return new ResponseEntity<Order>(findOrder.get(),HttpStatus.OK);
+        }else throw new OrderException("Order Does not exist with Id:"+confirmOrderReq.getOrderId());
     }
     @Override
     public List<Order> getOrdersByCustomerId(Integer customerId) throws OrderException, CustomerException {
@@ -241,7 +239,6 @@ public class OrderServiceImp implements OrderService{
 
 
     }
-
     @Override
     public Order updateOrderStatus(Integer orderId, String orderStatus) throws OrderException {
         Optional<Order> findOrder=null;
@@ -255,7 +252,6 @@ public class OrderServiceImp implements OrderService{
         findOrder.get().setOrderStatus(orderStatus);
         return this.orderRepository.save(findOrder.get());
     }
-
     @Override
     public List<Order> getOrdersByStatus(String orderStatus) throws OrderException {
         if(orderStatus==null)
@@ -264,6 +260,4 @@ public class OrderServiceImp implements OrderService{
         }
         return this.orderRepository.findByOrderStatus(orderStatus);
     }
-
-
 }

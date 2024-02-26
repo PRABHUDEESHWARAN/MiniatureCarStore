@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 
@@ -26,7 +27,7 @@ public class OrderController {
     }
 
     @GetMapping("getOrder/{id}")
-    public Order getOrderById(@PathVariable("id") Integer id) throws OrderException {
+    public Optional<Order> getOrderById(@PathVariable("id") Integer id) throws OrderException {
         return this.orderService.getOrderById(id);
     }
 
@@ -79,6 +80,11 @@ public class OrderController {
     public List<Order>  getOrdersByStatus(@PathVariable("status") String status) throws OrderException {
         return this.orderService.getOrdersByStatus(status);
     }
+
+    @PutMapping("/confirmOrder")
+        public ResponseEntity<Order> confirmOrder(@RequestBody ConfirmOrderReq confirmOrderReq) throws OrderException {
+            return this.orderService.confirmOrder(confirmOrderReq);
+        }
 
 
 

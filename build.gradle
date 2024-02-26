@@ -22,6 +22,8 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+	// https://mvnrepository.com/artifact/com.razorpay/razorpay-java
+	implementation group: 'com.razorpay', name: 'razorpay-java', version: '1.4.5'
 }
 
 tasks.named('test') {
