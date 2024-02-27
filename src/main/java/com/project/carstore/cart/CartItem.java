@@ -13,7 +13,7 @@ public class CartItem {
     private Long productId;
     private Double totalPrice;
 
-    public CartItem() {
+    public CartItem(long l, Product product, int i) {
     }
 
     public Integer getId() {
