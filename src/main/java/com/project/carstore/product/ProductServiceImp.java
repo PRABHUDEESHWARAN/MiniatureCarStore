@@ -21,7 +21,7 @@ public class ProductServiceImp implements ProductService {
         {
             throw new ProductException("Product cannot be null");
         }
-        if(this.productRepository.existsByName(product.getName()))
+        if(this.productRepository.existsByNameIgnoreCase(product.getName()))
         {
             throw new ProductException("Product already exists with name:"+product.getName());
         }

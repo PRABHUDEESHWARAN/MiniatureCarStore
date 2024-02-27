@@ -31,6 +31,15 @@ public class Order {
     private LocalDate deliveryDate;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+    private String TransactionId=null;
+
+    public String getTransactionId() {
+        return TransactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        TransactionId = transactionId;
+    }
 
     public Set<OrderItem> getOrderItem() {
         return orderItem;

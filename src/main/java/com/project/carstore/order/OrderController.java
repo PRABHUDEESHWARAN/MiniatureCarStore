@@ -1,14 +1,18 @@
 package com.project.carstore.order;
 
+import com.project.carstore.cart.CartException;
 import com.project.carstore.customer.Address;
+import com.project.carstore.customer.AddressDto;
 import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.payment.PaymentDetails;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 
@@ -18,22 +22,22 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/createOrder/{customerId}")
-    public Order createOrder(@PathVariable("customerId") Integer customerId) throws OrderException {
+    public ResponseEntity<StockValidationResponse> createOrder(@PathVariable("customerId") Integer customerId) throws OrderException, CustomerException, CartException {
         return this.orderService.createOrder(customerId);
     }
 
     @GetMapping("getOrder/{id}")
-    public Order getOrderById(@PathVariable("id") Integer id) throws OrderException {
+    public Optional<Order> getOrderById(@PathVariable("id") Integer id) throws OrderException {
         return this.orderService.getOrderById(id);
     }
 
-    @DeleteMapping("cancelOrder/{orderId}")
+    @DeleteMapping("closeOrder/{orderId}")
     public Order deleteOrderById(@PathVariable("orderId") Integer orderId) throws OrderException, CustomerException {
-        return this.orderService.cancelOrderById(orderId);
+        return this.orderService.closeOrderById(orderId);
     }
 
     @PostMapping("addAddress/{orderId}")
-    public Address addAddressByOrderID(@PathVariable("orderId") Integer orderId,@RequestBody Address newAddress) throws OrderException {
+    public ResponseEntity<Order> addAddressByOrderID(@PathVariable("orderId") Integer orderId, @RequestBody AddressDto newAddress) throws OrderException, CustomerException {
         return this.orderService.addAddressToOrder(orderId,newAddress);
     }
 
@@ -42,8 +46,8 @@ public class OrderController {
         return this.orderService.getAddressByOrderId(orderID);
     }
 
-    @GetMapping("getTotalAmountOfOrderByOrderID/{orderID}")
-    public Double getTotalAmountOfOrderByOrderID(@PathVariable("orderID") Integer orderId) throws OrderException {
+    @GetMapping("getTotalPriceById/{orderId}")
+    public Double getTotalPriceById(@PathVariable("orderId") Integer orderId) throws OrderException {
         return this.orderService.getTotalPrice(orderId);
     }
 
@@ -76,6 +80,11 @@ public class OrderController {
     public List<Order>  getOrdersByStatus(@PathVariable("status") String status) throws OrderException {
         return this.orderService.getOrdersByStatus(status);
     }
+
+    @PutMapping("/confirmOrder")
+        public ResponseEntity<Order> confirmOrder(@RequestBody ConfirmOrderReq confirmOrderReq) throws OrderException {
+            return this.orderService.confirmOrder(confirmOrderReq);
+        }
 
 
 
