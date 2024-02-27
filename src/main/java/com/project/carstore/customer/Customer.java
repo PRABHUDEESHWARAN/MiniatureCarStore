@@ -27,7 +27,7 @@ public class Customer {
     @Column(name = "password",nullable = false,length = 15)
     private String password;
 
-    @Column(name = "MobileNo",nullable = false,length = 10)
+    @Column(name = "Mobile_Number",nullable = false,length = 10)
     private Long mobileNo;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> address=new ArrayList<>();

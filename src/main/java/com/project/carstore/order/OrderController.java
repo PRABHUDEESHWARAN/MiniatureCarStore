@@ -1,6 +1,7 @@
 package com.project.carstore.order;
 
 import com.project.carstore.customer.Address;
+import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.payment.PaymentDetails;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class OrderController {
     }
 
     @DeleteMapping("cancelOrder/{orderId}")
-    public Order deleteOrderById(@PathVariable("orderId") Integer orderId) throws OrderException {
+    public Order deleteOrderById(@PathVariable("orderId") Integer orderId) throws OrderException, CustomerException {
         return this.orderService.cancelOrderById(orderId);
     }
 
@@ -62,7 +63,7 @@ public class OrderController {
     }
 
     @GetMapping("getOrdersByCustomerId/{customerId}")
-    public List<Order> getOrdersByCustomerId(@PathVariable("customerId") Integer customerId) throws OrderException {
+    public List<Order> getOrdersByCustomerId(@PathVariable("customerId") Integer customerId) throws OrderException, CustomerException {
         return this.orderService.getOrdersByCustomerId(customerId);
     }
 
