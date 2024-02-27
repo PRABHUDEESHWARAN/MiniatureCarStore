@@ -99,6 +99,7 @@ public class CartServiceImp implements CartService{
     }
     @Override
     public Optional<Cart> getCartByCustomerId(Integer customerId) throws CartException{
+        if(!this.customerRepository.existsById(customerId)) throw new CartException("Invalid customer Id:"+customerId);
         Optional<Customer> findCustomer= this.customerRepository.findById(customerId);
         if(findCustomer.isPresent())
         {
@@ -114,6 +115,7 @@ public class CartServiceImp implements CartService{
     }
     @Override
     public String clearCart(Integer customerId) throws CartException {
+        if(!this.customerRepository.existsById(customerId)) throw new CartException("Invalid customer Id:"+customerId);
         Optional<Customer> findCustomer=this.customerRepository.findById(customerId);
         if(findCustomer.isPresent())
         {

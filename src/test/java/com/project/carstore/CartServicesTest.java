@@ -1,28 +1,16 @@
 package com.project.carstore;
-
-
 import com.project.carstore.cart.*;
-import com.project.carstore.customer.Customer;
 import com.project.carstore.customer.CustomerRepository;
 import com.project.carstore.exceptions.ProductException;
-import com.project.carstore.product.Product;
-
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.junit.jupiter.api.Assertions.*;
-
-
 @SpringBootTest
-public class CartServiceTests {
+class CartServicesTest {
     @Autowired
     private CartService cartService;
     @Autowired
@@ -36,7 +24,7 @@ public class CartServiceTests {
     //updateCartItem tests
     @Test
     @DisplayName(value = "updating null product")
-    public void updateCartItemTest_NullCartItem() throws CartException, ProductException {
+    void updateCartItemTest_NullCartItem() throws CartException, ProductException {
         Assertions.assertThrows(NullPointerException.class, () -> {
             cartService.updateCartItem(null);
         });
@@ -45,22 +33,13 @@ public class CartServiceTests {
     // addProductToCart test
     @Test
     @DisplayName(value = "adding null product to cart")
-    public void addProductToCartTest_NullCartItem() throws CartException, ProductException {
+    void addProductToCartTest_NullCartItem() throws CartException, ProductException {
         Assertions.assertThrows(NullPointerException.class, () -> {
             cartService.addCartItemToCart(null);
         });
     }
-//    @Test
-//    @DisplayName(value = "adding product")
-//    public void addProductToCartTest_validProduct() throws CartException {
-//        Cart cart = new Cart();
-//        cart = this.cartService.addCartItemToCart(cart);
-//        Assertions.assertNotNull(cart);
-//        }
-
-    // getCartItemByProductId tests
     @Test
-    public void testGetCartItemByProduct_IdNotExists() {
+    void testGetCartItemByProduct_IdNotExists() {
         Long productId = 456L;
 
         Optional<CartItem> actualCartItem = cartItemRepository.findCartItemByProductId(productId);
@@ -70,14 +49,14 @@ public class CartServiceTests {
 
     //clear cart tests
     @Test
-    public void testClearCart_CustomerNotFound() {
+    void testClearCart_CustomerNotFound() {
         Integer customerId = 789;
 
         assertThrows(CartException.class, () -> cartService.clearCart(customerId));
     }
 
     @Test
-    public void testClearCart_CartNotFound() {
+    void testClearCart_CartNotFound() {
         Integer customerId = 123;
 
         assertThrows(CartException.class, () -> cartService.clearCart(customerId));
@@ -95,7 +74,7 @@ public class CartServiceTests {
     // create cart tests
     @Test
     @DisplayName("Create Cart For Customer - Valid Customer Id")
-    public void testCreateCartForValidCustomer() throws CartException {
+    void testCreateCartForValidCustomer() throws CartException {
         Integer customerId = 123; // Example customer ID
         Integer cartId = cartService.CreateCartForCustomer(customerId);
 
@@ -106,7 +85,7 @@ public class CartServiceTests {
     //get card by id tests
     @Test
     @DisplayName("Get Cart By Id - Valid Cart Id")
-    public void testGetCartByIdValidCartId() throws CartException {
+    void testGetCartByIdValidCartId() throws CartException {
         Integer cartId = 1; // Example cart ID
         Cart cart = cartService.getCartById(cartId).orElseThrow(() -> new CartException("No cart found"));
 
@@ -116,7 +95,7 @@ public class CartServiceTests {
 
     @Test
     @DisplayName("Get Cart By Id - Invalid Cart Id")
-    public void testGetCartByIdInvalidCartId() {
+    void testGetCartByIdInvalidCartId() {
         Integer cartId = 999; // Example invalid cart ID
         CartException exception = assertThrows(CartException.class, () -> {
             cartService.getCartById(cartId);
@@ -130,7 +109,7 @@ public class CartServiceTests {
 //get all cart items tests
     @Test
     @DisplayName("Get All Cart Items - Invalid Cart Id")
-    public void testGetAllCartItemsInvalidCartId() {
+    void testGetAllCartItemsInvalidCartId() {
         Integer cartId = -1; // Example invalid cart ID
         CartException exception = assertThrows(CartException.class, () -> {
             cartService.getAllCartItems(cartId);
@@ -144,7 +123,7 @@ public class CartServiceTests {
 // remove cart item from cart tests
     @Test
     @DisplayName("Remove Cart Item - Invalid Cart Item Id")
-    public void testRemoveCartItemInvalidCartItemId() {
+    void testRemoveCartItemInvalidCartItemId() {
         Integer cartItemId = 999; // Example invalid cart item ID
         CartException exception = assertThrows(CartException.class, () -> {
             cartService.removeCartItem(cartItemId);
@@ -156,7 +135,7 @@ public class CartServiceTests {
 // getCartItemById tests
     @Test
     @DisplayName("Get Cart Item By Id - Invalid Cart Item Id")
-    public void testGetCartItemByIdInvalidId() throws CartException {
+    void testGetCartItemByIdInvalidId() throws CartException {
         Integer cartItemId = -1; // Example invalid cart item ID
 
         Optional<CartItem> result = cartService.getCartItemById(cartItemId);
@@ -167,7 +146,7 @@ public class CartServiceTests {
 // getCartByCustomerId
     @Test
     @DisplayName("Get Cart By Customer Id - Invalid Customer Id")
-    public void testGetCartByCustomerIdInvalidId() {
+    void testGetCartByCustomerIdInvalidId() {
         Integer customerId = 0; // Example invalid customer ID
 
         CartException exception = assertThrows(CartException.class, () -> {
@@ -175,7 +154,7 @@ public class CartServiceTests {
         });
 
         // Assert the exception message
-        assertEquals("No customer exist with Id:" + customerId, exception.getMessage());
+        assertEquals("Invalid customer Id:" + customerId, exception.getMessage());
     }
 
 

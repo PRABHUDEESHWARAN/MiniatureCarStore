@@ -50,6 +50,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public Product updateProductInDb(UpdateProductDTO productDetails) throws ProductException {
         //handle exceptions
+        if(productDetails==null) throw new ProductException("ProductDetails cannot be Null");
         Long productId= productDetails.getProductId();
         if(productId==null)
         {

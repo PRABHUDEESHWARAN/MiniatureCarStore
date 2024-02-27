@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringJUnitConfig
 
 
-public class OrderApplicationTests {
+class OrderApplicationTests {
 
     @Autowired
     private OrderService orderService;
@@ -52,7 +52,7 @@ public class OrderApplicationTests {
 
     @Test
     @DisplayName("A test case for the method createOrder")
-    public void createOrderTest() throws OrderException , CartException {
+    void createOrderTest() throws OrderException , CartException {
        Integer customerId = 1;
 
        try {
@@ -68,7 +68,7 @@ public class OrderApplicationTests {
 
     @Test
     @DisplayName("A test case for the method getOrderById")
-    public void getOrderByIDTest()
+    void getOrderByIDTest()
     {
         try
         {
@@ -81,7 +81,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void getOrderByIdTestThrowsAnExceptionIfOrderIdsAreNotEqual()throws OrderException{
+    void getOrderByIdTestThrowsAnExceptionIfOrderIdsAreNotEqual()throws OrderException{
         Integer orderId=1;
         try
         {
@@ -95,7 +95,7 @@ public class OrderApplicationTests {
 
     @Test
     @DisplayName("A test case for cancelOrderById method")
-    public void cancelOrderByIdTest()
+    void cancelOrderByIdTest()
     {
         Integer orderId=1;
         try
@@ -108,7 +108,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void ShouldThrowExceptionWhenCancelOrderReceivesNullTest()
+    void ShouldThrowExceptionWhenCancelOrderReceivesNullTest()
     {
 
         try {
@@ -121,7 +121,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void getOrdersByDateBetweenTest()
+    void getOrdersByDateBetweenTest()
     {
         LocalDate startDate=LocalDate.of(2025,10,10);
         LocalDate endDate=LocalDate.of(2025,11,24);
@@ -137,7 +137,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void shouldThrowExceptionWhenGetOrdersDateBetweenReceivesNullTest()
+    void shouldThrowExceptionWhenGetOrdersDateBetweenReceivesNullTest()
     {
         LocalDate startDate=null;
         LocalDate endDate=null;
@@ -155,7 +155,7 @@ public class OrderApplicationTests {
 
 
     @Test
-    public void throwsExceptionWhenGetTotalPriceReceivesNullTest()
+    void throwsExceptionWhenGetTotalPriceReceivesNullTest()
     {
         Integer orderId=null;
         try
@@ -169,7 +169,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void updatePaymentDetailsByOrderIdTest()
+    void updatePaymentDetailsByOrderIdTest()
     {
         Integer orderID=1;
         PaymentDetails paymentDetails=new PaymentDetails();
@@ -184,7 +184,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void orderIdAndPaymentDetailsOrderIdEqualsTest()
+    void orderIdAndPaymentDetailsOrderIdEqualsTest()
     {
         Integer orderID=1;
         PaymentDetails paymentDetails=new PaymentDetails();
@@ -201,7 +201,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void updateOrderStatusTest()
+    void updateOrderStatusTest()
     {
         Integer orderId=1;
         String status="cancelled";
@@ -210,12 +210,12 @@ public class OrderApplicationTests {
         {
             Assertions.assertNotNull(this.orderService.updateOrderStatus(orderId,status));
         } catch (OrderException e) {
-           e.printStackTrace();
+            Assertions.assertEquals("order does not exist with Id:"+1,e.getMessage());
         }
     }
 
     @Test
-    public void updateOrderStatusTestIfOrderIdIsNull()
+    void updateOrderStatusTestIfOrderIdIsNull()
     {
         Integer orderId=null;
         String orderStatus="processing";
@@ -230,10 +230,10 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void updateOrderStatusNewTest()
+    void updateOrderStatusNewTest()
     {
         Order sampleOrder = new Order(1,"vishnu","priya");
-        orderRepository.save(sampleOrder);
+        this.orderRepository.save(sampleOrder);
         Integer orderId = sampleOrder.getId();
         String orderStatus = "SHIPPED";
         try {
@@ -243,27 +243,26 @@ public class OrderApplicationTests {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Assertions.assertEquals("order does not exist with Id:"+sampleOrder.getId(),e.getMessage());
         }
     }
-
     @Test
-    public void updateOrderStatusTest1()
+    void updateOrderStatusTest1()
     {
-        Order newOrder=new Order();
+        Order newOrder=new Order(1,"vishnu","priya");
+        this.orderRepository.save(newOrder);
         String status=null;
         try
         {
             assertNotNull(this.orderService.updateOrderStatus(newOrder.getId(), null));
         }
-        catch (Exception e)
+        catch (OrderException e)
         {
-            e.printStackTrace();
+            Assertions.assertEquals("order does not exist with Id:"+newOrder.getId(),e.getMessage());
         }
     }
-
     @Test
-    public void updatePaymentDetailsWhenReceivesNullOrderIdAndPaymentDetailsTest()
+    void updatePaymentDetailsWhenReceivesNullOrderIdAndPaymentDetailsTest()
     {
         Integer orderId=null;
         PaymentDetails paymentDetails=null;
@@ -276,9 +275,8 @@ public class OrderApplicationTests {
             System.out.println("Unexpected Exception"+e.getClass().getName());
         }
     }
-
     @Test
-    public void getOrdersByStatusTest()
+    void getOrdersByStatusTest()
     {
         String orderStatus="pending";
         try
@@ -292,7 +290,7 @@ public class OrderApplicationTests {
         }
     }
     @Test
-    public void testGetOrdersByStatusWithNullStatus() throws OrderException {
+    void testGetOrdersByStatusWithNullStatus() throws OrderException {
 
         try
         {
@@ -303,23 +301,19 @@ public class OrderApplicationTests {
             System.out.println("you got unexpected exception: "+e.getClass().getName());
         }
     }
-
     @Test
-    public void getOrdersByCustomerIdTest()
+    void getOrdersByCustomerIdTest()
     {
         Integer customerId=1;
         try
         {
             Assertions.assertNotNull(this.orderService.getOrdersByCustomerId(customerId));
-        } catch (CustomerException e) {
-            e.printStackTrace();
-        } catch (OrderException e) {
-            e.printStackTrace();
+        }catch (OrderException | CustomerException e) {
+            assertEquals("No customer found with the provided id:"+customerId,e.getMessage());
         }
     }
-
     @Test
-    public void getOrdersByCustomerIdEqualsTest()
+    void getOrdersByCustomerIdEqualsTest()
     {
         try
         {
@@ -328,12 +322,11 @@ public class OrderApplicationTests {
         }
         catch(OrderException | CustomerException e)
         {
-            e.printStackTrace();
+            assertEquals("No customer found with the provided id:"+1,e.getMessage());
         }
     }
-
     @Test
-    public void updateDeliveryDateByOrderITest()
+    void updateDeliveryDateByOrderITest()
     {
         Integer orderId = 1;
         LocalDate newDeliveryDate = LocalDate.now().plusDays(7);
@@ -345,8 +338,6 @@ public class OrderApplicationTests {
         } catch (OrderException e) {
             Assertions.fail("An exception occurred: " + e.getMessage());
         }
-
-
         Assertions.assertNotNull(updatedOrder, "Updated order should not be null");
         Assertions.assertEquals(newDeliveryDate, updatedOrder.getDeliveryDate(), "Delivery date should match the new date");
 
@@ -354,7 +345,7 @@ public class OrderApplicationTests {
     }
 
     @Test
-    public void ddAddressToOrderTest()
+    void addAddressToOrderTest()
     {
         try
         {
@@ -362,13 +353,13 @@ public class OrderApplicationTests {
         }
         catch(OrderException | CustomerException e)
         {
-            e.printStackTrace();
+            Assertions.assertEquals("No customer exist with id: "+1,e.getMessage());
         }
     }
 
     @Test
     @Transactional
-    public void ddAddressToOrderNullTest() throws CustomerException {
+    void ddAddressToOrderNullTest() throws CustomerException {
         Customer sampleCustomer = new Customer("john","leo","john","leo", 3264725L);
         this.customerRepository.save(sampleCustomer);
         Order sampleOrder = new Order(sampleCustomer.getId(),"john","leo");
@@ -385,9 +376,8 @@ public class OrderApplicationTests {
 
 
     }
-
     @Test
-    public void getAddressByOrderIdTest()
+    void getAddressByOrderIdTest()
     {try {
         Address address = this.orderService.getAddressByOrderId(1);
         if (address != null) {
@@ -397,9 +387,8 @@ public class OrderApplicationTests {
         System.out.println(e.getClass().getName());
     }
     }
-
     @Test
-    public void confirmOrderTest() throws OrderException {
+    void confirmOrderTest() throws OrderException {
         Customer customer=new Customer("john","leo","john","leo", 93875L);
         ConfirmOrderReq confirmOrderReq = new ConfirmOrderReq("1", 1);
         Order existingOrder = new Order(customer.getId(),"john","leo");

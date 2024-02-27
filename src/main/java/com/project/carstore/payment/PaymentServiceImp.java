@@ -26,7 +26,8 @@ public class PaymentServiceImp implements PaymentService{
         this.env=env;
     }
 
-    public void SaveCardInfo(List<CardInfo> cardInfoList) {
+    public void SaveCardInfo(List<CardInfo> cardInfoList) throws PaymentException{
+        if(cardInfoList==null)throw new PaymentException("CardInfo cannot be Null");
         this.cardInfoRepository.saveAll(cardInfoList);
     }
 
@@ -41,6 +42,7 @@ public class PaymentServiceImp implements PaymentService{
 
     @Override
     public TransactionDetails createTransaction(Integer orderId) throws PaymentException, OrderException, RazorpayException {
+        if(orderId==null || !this.orderRepository.existsById(orderId))throw new PaymentException("Order does not exist with Id:"+orderId);
         // get Order using orderId
         Optional<Order> findOrder=this.orderRepository.findById(orderId);
         //create jsonObject for razorpay
@@ -56,8 +58,7 @@ public class PaymentServiceImp implements PaymentService{
             String currency=razorpayOrder.get("currency");
             Integer amount=razorpayOrder.get("amount");
 
-            TransactionDetails transactionDetails=new TransactionDetails(transactionId,currency,amount.doubleValue(),key);
-            return transactionDetails;
+            return new TransactionDetails(transactionId,currency,amount.doubleValue(),key);
 
         }else throw new OrderException("No order Exist with Id:"+orderId);
     }
