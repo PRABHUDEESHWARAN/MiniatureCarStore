@@ -25,7 +25,7 @@ public class ProductServiceImp implements ProductService {
         {
             throw new ProductException("Product already exists with name:"+product.getName());
         }
-        Product ProductToBeAdded=new Product( product.getName(), product.getPrice(), product.getDescription(), product.getImageUrl(), product.getColour(), product.getQuantity());
+        Product ProductToBeAdded=new Product( product.getName(), product.getPrice(), product.getDescription(), product.getImageUrl(), product.getQuantity());
 
         return this.productRepository.save(ProductToBeAdded);
     }

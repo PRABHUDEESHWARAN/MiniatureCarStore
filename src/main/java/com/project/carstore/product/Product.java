@@ -27,10 +27,10 @@ public class Product {
     @Column(nullable = false)
     private Integer quantity;
 
-    public Product() {
+    public Product(long l, String pen, double v, String string, String s, String white, int i) {
     }
 
-    public Product( String name, Double price, String description, String imageUrl, String colour, Integer quantity) {
+    public Product(String name, Double price, String description, String imageUrl, Integer quantity) {
         this.name = name;
         this.price = price;
         this.description = description;
