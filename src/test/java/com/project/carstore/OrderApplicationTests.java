@@ -7,31 +7,28 @@ import com.project.carstore.customer.*;
 import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.order.*;
 import com.project.carstore.payment.PaymentDetails;
-import org.antlr.v4.runtime.misc.LogManager;
-import org.aspectj.weaver.ast.Or;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.Optional;
+
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+
 
 @SpringBootTest(classes = CarstoreApplication.class)
 @SpringJUnitConfig
@@ -339,7 +336,7 @@ public class OrderApplicationTests {
     public void updateDeliveryDateByOrderITest()
     {
         Integer orderId = 1;
-        LocalDate newDeliveryDate = LocalDate.now().plusDays(7);  // Replace with a new delivery date
+        LocalDate newDeliveryDate = LocalDate.now().plusDays(7);
 
 
         Order updatedOrder = null;
@@ -372,9 +369,9 @@ public class OrderApplicationTests {
     @Test
     @Transactional
     public void ddAddressToOrderNullTest() throws CustomerException {
-        Customer sampleCustomer = new Customer("vishnu","priya","vish","pri", 3264725L);
+        Customer sampleCustomer = new Customer("john","leo","john","leo", 3264725L);
         this.customerRepository.save(sampleCustomer);
-        Order sampleOrder = new Order(sampleCustomer.getId(),"vishnu","priya");
+        Order sampleOrder = new Order(sampleCustomer.getId(),"john","leo");
         orderRepository.save(sampleOrder);
         Integer orderId = sampleOrder.getId();
         AddressDto addressDto=new AddressDto(sampleCustomer.getId(),111,"chennai",7890,"tn");
@@ -399,5 +396,15 @@ public class OrderApplicationTests {
     } catch (OrderException e) {
         System.out.println(e.getClass().getName());
     }
-    }}
+    }
 
+    @Test
+    public void confirmOrderTest() throws OrderException {
+        Customer customer=new Customer("john","leo","john","leo", 93875L);
+        ConfirmOrderReq confirmOrderReq = new ConfirmOrderReq("1", 1);
+        Order existingOrder = new Order(customer.getId(),"john","leo");
+        existingOrder.setOrderStatus("Pending");
+        ResponseEntity<Order> response = this.orderService.confirmOrder(confirmOrderReq);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+}
