@@ -1,15 +1,13 @@
 package com.project.carstore.payment;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 public class PaymentDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paymentId;
     private String paymentMethod;
     private Integer orderId;
@@ -22,8 +20,8 @@ public class PaymentDetails {
     public PaymentDetails() {
     }
 
-    public PaymentDetails(Integer paymentId, String paymentMethod, Integer orderId, Boolean status, List<CardInfo> cardInfo) {
-        this.paymentId = paymentId;
+    public PaymentDetails(String paymentMethod, Integer orderId, Boolean status, List<CardInfo> cardInfo) {
+
         this.paymentMethod = paymentMethod;
         this.orderId = orderId;
         this.status = status;

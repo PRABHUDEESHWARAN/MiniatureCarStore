@@ -2,11 +2,11 @@ package com.project.carstore.product;
 
 public class UpdateProductDTO {
     private Long productId;
-    private Double Price;
-    private String Description;
-    private String ImageUrl;
-    private String Colour;
-    private Integer Quantity;
+    private Double price;
+    private String description;
+    private String imageUrl;
+    private String colour;
+    private Integer quantity;
 
     public Long getProductId() {
         return productId;
@@ -17,51 +17,51 @@ public class UpdateProductDTO {
     }
 
     public Double getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(Double price) {
-        Price = price;
+        this.price = price;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public String getImageUrl() {
-        return ImageUrl;
+        return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
-        ImageUrl = imageUrl;
+        this.imageUrl = imageUrl;
     }
 
     public String getColour() {
-        return Colour;
+        return colour;
     }
 
     public void setColour(String colour) {
-        Colour = colour;
+        this.colour = colour;
     }
 
     public Integer getQuantity() {
-        return Quantity;
+        return quantity;
     }
 
     public void setQuantity(Integer quantity) {
-        Quantity = quantity;
+        this.quantity = quantity;
     }
 
     public UpdateProductDTO(Long productId, Double price, String description, String imageUrl, String colour, Integer quantity) {
         this.productId = productId;
-        Price = price;
-        Description = description;
-        ImageUrl = imageUrl;
-        Colour = colour;
-        Quantity = quantity;
+        this.price = price;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.colour = colour;
+        this.quantity = quantity;
     }
 }

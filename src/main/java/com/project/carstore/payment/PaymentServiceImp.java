@@ -14,10 +14,11 @@ import java.util.Optional;
 
 @Service
 public class PaymentServiceImp implements PaymentService{
-    private CardInfoRepository cardInfoRepository;
-    private PaymentRepository paymentRepository;
-    private OrderRepository orderRepository;
-    private Environment env;
+    private final CardInfoRepository cardInfoRepository;
+    private final PaymentRepository paymentRepository;
+    private final OrderRepository orderRepository;
+    private final Environment env;
+    private static final String CURRENCY="currency";
     public PaymentServiceImp(CardInfoRepository cardInfoRepository, PaymentRepository paymentRepository, OrderRepository orderRepository,Environment env)
     {
         this.cardInfoRepository=cardInfoRepository;
@@ -26,7 +27,8 @@ public class PaymentServiceImp implements PaymentService{
         this.env=env;
     }
 
-    public void SaveCardInfo(List<CardInfo> cardInfoList) throws PaymentException{
+    @Override
+    public void saveCardInfo(List<CardInfo> cardInfoList) throws PaymentException{
         if(cardInfoList==null)throw new PaymentException("CardInfo cannot be Null");
         this.cardInfoRepository.saveAll(cardInfoList);
     }
@@ -48,14 +50,14 @@ public class PaymentServiceImp implements PaymentService{
         //create jsonObject for razorpay
         if(findOrder.isPresent()){
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("amount",(Double)findOrder.get().getTotalPrice()*100);
-            jsonObject.put("currency",env.getProperty("currency"));
+            jsonObject.put("amount", findOrder.get().getTotalPrice() *100);
+            jsonObject.put(CURRENCY,env.getProperty(CURRENCY));
             //create razorpay client
             RazorpayClient razorpayClient=new RazorpayClient(env.getProperty("razorpay.api.key"), env.getProperty("razorpay.api.secret"));
             com.razorpay.Order  razorpayOrder =razorpayClient.orders.create(jsonObject);
             String key=env.getProperty("razorpay.api.key");
             String transactionId=razorpayOrder.get("id");
-            String currency=razorpayOrder.get("currency");
+            String currency=razorpayOrder.get(CURRENCY);
             Integer amount=razorpayOrder.get("amount");
 
             return new TransactionDetails(transactionId,currency,amount.doubleValue(),key);

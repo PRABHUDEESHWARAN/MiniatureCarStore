@@ -1,6 +1,5 @@
 package com.project.carstore.cart;
 
-import com.project.carstore.customer.Customer;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -11,11 +10,9 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //    @OneToOne
-//    private Customer customer;
     private Integer customerId;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItem> cartItems=new HashSet<>();
+    private Set<CartItem> cartItems = new HashSet<>();
     private Double totalPrice;
     private Integer totalItems;
 
@@ -31,9 +28,8 @@ public class Cart {
     }
 
     public Cart(Integer customerId) {
-        this.customerId=customerId;
+        this.customerId = customerId;
     }
-
 
     public Cart(Set<CartItem> cartItems, Double totalPrice, Integer totalItems) {
         this.cartItems = cartItems;
@@ -48,14 +44,6 @@ public class Cart {
     public void setId(Integer id) {
         this.id = id;
     }
-
-//    public Customer getCustomer() {
-//        return customer;
-//    }
-//
-//    public void setCustomer(Customer customer) {
-//        this.customer = customer;
-//    }
 
     public Set<CartItem> getCartItems() {
         return cartItems;

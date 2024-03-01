@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CartController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.project.carstore.cart</a>
+</div>
+
+<h1>Coverage Summary for Class: CartController (com.project.carstore.cart)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CartController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.project.carstore.cart;
+&nbsp;
+&nbsp;import com.project.carstore.customer.CustomerRepository;
+&nbsp;import com.project.carstore.exceptions.ProductException;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import com.project.carstore.customer.Customer;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/cart&quot;)
+<b class="nc">&nbsp;public class CartController {</b>
+&nbsp;    @Autowired
+&nbsp;    private CartService cartService;
+&nbsp;    @Autowired
+&nbsp;    private CustomerRepository customerRepository;
+&nbsp;    @PostMapping(&quot;/addCartItem&quot;)
+&nbsp;    public Cart addCartItemToCart(@RequestBody CartItemDTO cartItemDTO) throws CartException
+&nbsp;    {
+<b class="nc">&nbsp;        return this.cartService.addCartItemToCart(cartItemDTO);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/{customerId}&quot;)
+&nbsp;    public Cart getCartByCustomerId(@PathVariable(&quot;customerId&quot;) Integer customerId) throws CartException
+&nbsp;    {
+<b class="nc">&nbsp;        Optional&lt;Cart&gt; findCart=this.cartService.getCartByCustomerId(customerId);</b>
+<b class="nc">&nbsp;        if(findCart.isPresent())</b>
+&nbsp;        {
+<b class="nc">&nbsp;            return findCart.get();</b>
+<b class="nc">&nbsp;        }else throw new CartException(&quot;Invalid Customer Id&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/clear/{customerId}&quot;)
+&nbsp;    public String clearCustomerCart(@PathVariable(&quot;customerId&quot;) Integer customerId) throws CartException
+&nbsp;    {
+<b class="nc">&nbsp;        return this.cartService.clearCart(customerId);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/cartTotal/{cartId}&quot;)
+&nbsp;    public Double getCartTotal(@PathVariable(&quot;cartId&quot;) Integer cartId) throws CartException {
+<b class="nc">&nbsp;        return this.cartService.getCartTotal(cartId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PatchMapping(&quot;/update-cart&quot;)
+&nbsp;    public Cart updateCartItem(@RequestBody UpdateCartItemDTO updateCartItemDTO) throws CartException, ProductException {
+<b class="nc">&nbsp;        return this.cartService.updateCartItem(updateCartItemDTO);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/cartItem/del/{cartItemId}&quot;)
+&nbsp;    public String removeCartItem(@PathVariable(&quot;cartItemId&quot;) Integer cartItemId) throws CartException
+&nbsp;    {
+<b class="nc">&nbsp;        return this.cartService.removeCartItem(cartItemId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/cartItems/{cartId}&quot;)
+&nbsp;    public Set&lt;CartItem&gt; getAllCartItems(@PathVariable(&quot;cartId&quot;) Integer cartId) throws CartException{
+<b class="nc">&nbsp;        return this.cartService.getAllCartItems(cartId);</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-27 14:38</div>
+</div>
+</body>
+</html>

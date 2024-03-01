@@ -1,0 +1,201 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Product</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.project.carstore.product</a>
+</div>
+
+<h1>Coverage Summary for Class: Product (com.project.carstore.product)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Product</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.project.carstore.product;
+&nbsp;
+&nbsp;import jakarta.persistence.Entity;
+&nbsp;import jakarta.persistence.*;
+&nbsp;@Entity
+&nbsp;public class Product {
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Long id;
+&nbsp;
+&nbsp;
+&nbsp;    @Column(nullable = false,length = 100)
+&nbsp;    private String name;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Double price;
+&nbsp;
+&nbsp;    @Column(nullable = false,length = 1000)
+&nbsp;    private String description;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private String imageUrl;
+&nbsp;
+&nbsp;    @Column(nullable = false,length = 15)
+&nbsp;    private String colour;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Integer quantity;
+&nbsp;
+<b class="nc">&nbsp;    public Product() {</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public Product( String name, Double price, String description, String imageUrl, String colour, Integer quantity) {</b>
+<b class="nc">&nbsp;        this.name = name;</b>
+<b class="nc">&nbsp;        this.price = price;</b>
+<b class="nc">&nbsp;        this.description = description;</b>
+<b class="nc">&nbsp;        this.imageUrl = imageUrl;</b>
+<b class="nc">&nbsp;        this.colour = colour;</b>
+<b class="nc">&nbsp;        this.quantity = quantity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getId() {
+<b class="nc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Long id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getName() {
+<b class="nc">&nbsp;        return name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setName(String name) {
+<b class="nc">&nbsp;        this.name = name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Double getPrice() {
+<b class="nc">&nbsp;        return price;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPrice(Double price) {
+<b class="nc">&nbsp;        this.price = price;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getDescription() {
+<b class="nc">&nbsp;        return description;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDescription(String description) {
+<b class="nc">&nbsp;        this.description = description;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getImageUrl() {
+<b class="nc">&nbsp;        return imageUrl;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setImageUrl(String imageUrl) {
+<b class="nc">&nbsp;        this.imageUrl = imageUrl;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getColour() {
+<b class="nc">&nbsp;        return colour;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setColour(String colour) {
+<b class="nc">&nbsp;        this.colour = colour;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getQuantity() {
+<b class="nc">&nbsp;        return quantity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setQuantity(Integer quantity) {
+<b class="nc">&nbsp;        this.quantity = quantity;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-27 14:38</div>
+</div>
+</body>
+</html>

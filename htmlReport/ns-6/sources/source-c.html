@@ -1,0 +1,105 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > OrderService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.project.carstore.order</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderService (com.project.carstore.order)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">OrderService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.project.carstore.order;
+&nbsp;
+&nbsp;import com.project.carstore.cart.CartException;
+&nbsp;import com.project.carstore.customer.Address;
+&nbsp;import com.project.carstore.customer.AddressDto;
+&nbsp;import com.project.carstore.exceptions.CustomerException;
+&nbsp;import com.project.carstore.payment.PaymentDetails;
+&nbsp;import org.aspectj.weaver.ast.Or;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;public interface OrderService {
+&nbsp;    ResponseEntity&lt;StockValidationResponse&gt; createOrder(Integer customerId) throws OrderException, CustomerException, CartException;
+&nbsp;
+&nbsp;    Optional&lt;Order&gt; getOrderById(Integer orderId) throws OrderException;
+&nbsp;    Order closeOrderById(Integer orderId) throws OrderException, CustomerException;
+&nbsp;
+&nbsp;    ResponseEntity&lt;Order&gt; addAddressToOrder(Integer orderID, AddressDto newAddress ) throws OrderException, CustomerException;
+&nbsp;    Address getAddressByOrderId(Integer orderId) throws OrderException;
+&nbsp;    List&lt;Order&gt; getOrdersByDate(LocalDate startDate,LocalDate endDate) throws OrderException;
+&nbsp;    List&lt;Order&gt; getOrdersByCustomerId(Integer customerId) throws OrderException, CustomerException;
+&nbsp;    Order updateOrderStatus(Integer orderId,String orderStatus) throws OrderException;
+&nbsp;    List&lt;Order&gt; getOrdersByStatus(String orderStatus) throws OrderException;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    Double getTotalPrice(Integer orderId) throws OrderException;
+&nbsp;    Order updatePaymentDetailsByOrderId(Integer orderId,PaymentDetails newPaymentDetails) throws OrderException;
+&nbsp;    Order updateDeliveryDateByOrderId(Integer orderId,LocalDate newDeliveryDate) throws OrderException;
+&nbsp;
+&nbsp;
+&nbsp;    ResponseEntity&lt;Order&gt; confirmOrder(ConfirmOrderReq confirmOrderReq) throws OrderException;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-27 14:38</div>
+</div>
+</body>
+</html>

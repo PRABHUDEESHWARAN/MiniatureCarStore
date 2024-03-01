@@ -1,7 +1,7 @@
 package com.project.carstore.cart;
 
 public class AddItemToCartDto {
-    private  Integer cartId;
+    private Integer cartId;
     private Integer productId;
     private Integer quantity;
 

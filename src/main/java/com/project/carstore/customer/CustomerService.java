@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
-    Customer AddCustomerToDb(CustomerDto customerDTO) throws CustomerException, CartException;
+    Customer addCustomerToDb(CustomerDto customerDTO) throws CustomerException, CartException;
     Optional<Customer> getCustomerById(Integer id) throws CustomerException;
 
     void addOrderToCustomer(Order newOrder) throws CustomerException;
 
-    String UpdateCustomerEmail(UpdateEmailDto updateEmailDto) throws CustomerException;
+    String updateCustomerEmail(UpdateEmailDto updateEmailDto) throws CustomerException;
 
-    String UpdateCustomerPwd(UpdatePwdDto updatePwdDto) throws CustomerException;
-     String DeleteCustomerById(Integer customerId) throws CustomerException;
-     List<Customer> GetAllCustomers() throws CustomerException;
-     Customer GetCustomerByEmail(String email) throws CustomerException;
+    String updateCustomerPwd(UpdatePwdDto updatePwdDto) throws CustomerException;
+     String deleteCustomerById(Integer customerId) throws CustomerException;
+     List<Customer> getAllCustomers() throws CustomerException;
+     Customer getCustomerByEmail(String email) throws CustomerException;
      Customer getCustomerByMobileNo(Long mobileNo) throws CustomerException;
 
     List<Order> getCustomerOrders(Integer customerId) throws CustomerException;

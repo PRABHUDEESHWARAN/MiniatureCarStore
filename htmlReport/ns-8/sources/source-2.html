@@ -1,0 +1,232 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProductController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.project.carstore.product</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductController (com.project.carstore.product)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/61)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.project.carstore.product;
+&nbsp;
+&nbsp;import com.project.carstore.exceptions.ProductException;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/product&quot;)
+<b class="nc">&nbsp;public class ProductController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private ProductService productService;
+<b class="nc">&nbsp;    Product product=null;</b>
+&nbsp;    @PostMapping(&quot;/addProduct&quot;)
+&nbsp;    public ResponseEntity&lt;Product&gt; addProductToDb(@RequestBody ProductDTO product)
+&nbsp;    {
+<b class="nc">&nbsp;        Product addedProduct=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            addedProduct= productService.addProductToDb(product);</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;Product&gt;(addedProduct, HttpStatus.ACCEPTED);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/deleteProduct/{Id}&quot;)
+&nbsp;    public ResponseEntity&lt;Product&gt; deleteProductFromDb(@PathVariable(&quot;Id&quot;) Long Id)
+&nbsp;    {
+<b class="nc">&nbsp;        Product deletedProduct=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            deletedProduct=this.productService.deleteProductFromDb(Id);</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;Product&gt;(deletedProduct,HttpStatus.ACCEPTED);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PatchMapping(&quot;/updateProduct&quot;)
+&nbsp;    public ResponseEntity&lt;Product&gt; updateProductInDb(@RequestBody UpdateProductDTO productDetails)
+&nbsp;    {
+<b class="nc">&nbsp;        Product updatedProduct=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            updatedProduct=this.productService.updateProductInDb(productDetails);</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;Product&gt;(updatedProduct,HttpStatus.ACCEPTED);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/products&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getAllProducts() throws ProductException{
+<b class="nc">&nbsp;        List&lt;Product&gt; products=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            products=this.productService.getAllProducts();</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(products,HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/product/{id}&quot;)
+&nbsp;    public Product getProductById(@PathVariable(&quot;id&quot;) Long productId) throws ProductException {
+<b class="nc">&nbsp;        Product product=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            product=this.productService.getProductById(productId).get();</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;       if(product!=null){</b>
+<b class="nc">&nbsp;           return new ResponseEntity&lt;&gt;(product, HttpStatus.OK).getBody();</b>
+&nbsp;       }else{
+<b class="nc">&nbsp;           throw new ProductException(&quot;Product not found&quot;+productId);</b>
+&nbsp;       }
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/price-range&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getAllProductsByPriceRange(@RequestParam Double min, @RequestParam Double max) throws ProductException {
+<b class="nc">&nbsp;        List&lt;Product&gt; products=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            products=this.productService.getAllProductsByPriceRange(min,max);</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(products, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/sorted-by-price&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getAllProductsSortedByPrice() throws ProductException{
+<b class="nc">&nbsp;        List&lt;Product&gt; products=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            products=this.productService.getAllProductsSortedByPrice();</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(products, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/get-product-by-name&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getAllProductsByName(@RequestParam String name) throws ProductException{
+<b class="nc">&nbsp;        List&lt;Product&gt; products=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            products=this.productService.getAllProductsByName(name);</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(products,HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/get-product-by-description&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getAllProductsByDescription(@RequestParam String description) throws ProductException{
+<b class="nc">&nbsp;        List&lt;Product&gt; products=null;</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            products=this.productService.getAllProductsByDescription(description);</b>
+<b class="nc">&nbsp;        } catch (ProductException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(products,HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/get-product-by-price/{price}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Product&gt;&gt; getAllProductsByPrice(@PathVariable(&quot;price&quot;) Double price) throws ProductException{
+<b class="nc">&nbsp;        List&lt;Product&gt; productsList=null;</b>
+<b class="nc">&nbsp;        productsList=this.productService.getAllProductsByPrice(price);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(productsList,HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-27 14:38</div>
+</div>
+</body>
+</html>

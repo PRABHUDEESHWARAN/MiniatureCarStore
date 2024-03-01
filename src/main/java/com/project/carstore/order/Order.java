@@ -9,79 +9,32 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "OrderTable")
+@Table(name = "orderTable")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Column(nullable = false)
     private Integer customerId;
     @Column(nullable = false)
     private String firstName;
-
     @Column(nullable = false)
-    private String LastName;
-
+    private String lastName;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<OrderItem> orderItem=new HashSet<>();
-
     private Double totalPrice;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-    private String TransactionId=null;
-
-    public String getTransactionId() {
-        return TransactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        TransactionId = transactionId;
-    }
-
-    public Set<OrderItem> getOrderItem() {
-        return orderItem;
-    }
-
-    public void setOrderItem(Set<OrderItem> orderItem) {
-        this.orderItem = orderItem;
-    }
-
+    private String transactionId=null;
     @OneToOne(cascade = CascadeType.ALL)
     private PaymentDetails paymentDetails;
     private String orderStatus;
     private Integer totalItems;
 
-
-    public Order() {
-    }
-
-    public Order( Integer customerId, String firstName, String lastName) {
-
-        this.customerId = customerId;
-        this.firstName = firstName;
-        LastName = lastName;
-
-    }
-
-
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return LastName;
-    }
-
-    public void setLastName(String lastName) {
-        LastName = lastName;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
     public Integer getId() {
@@ -92,12 +45,32 @@ public class Order {
         this.id = id;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
     public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Set<OrderItem> getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(Set<OrderItem> orderItem) {
+        this.orderItem = orderItem;
     }
 
     public Double getTotalPrice() {
@@ -132,6 +105,14 @@ public class Order {
         this.address = address;
     }
 
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
     public PaymentDetails getPaymentDetails() {
         return paymentDetails;
     }
@@ -156,5 +137,11 @@ public class Order {
         this.totalItems = totalItems;
     }
 
-
+    public Order() {
+    }
+    public Order(Integer customerId, String firstName, String lastName) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

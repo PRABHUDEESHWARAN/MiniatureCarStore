@@ -1,33 +1,27 @@
 package com.project.carstore.customer;
-
-import com.project.carstore.cart.Cart;
 import com.project.carstore.order.Order;
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
-@Component
-
 @Entity
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "FirstName",nullable = false,length = 50)
+    @Column(nullable = false,length = 50)
     private String firstname;
 
-    @Column(name = "LastName",nullable = false,length = 50)
+    @Column(nullable = false,length = 50)
     private String lastname;
 
-    @Column(name = "Email",nullable = false,length = 200)
+    @Column(nullable = false,length = 200)
     private String email;
 
-    @Column(name = "password",nullable = false,length = 15)
+    @Column(nullable = false,length = 15)
     private String password;
 
-    @Column(name = "Mobile_Number",nullable = false,length = 10)
+    @Column(nullable = false,length = 10)
     private Long mobileNo;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> address=new ArrayList<>();
@@ -60,15 +54,15 @@ public class Customer {
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Order> CustomerOrders=new ArrayList<Order>();
+    private List<Order> customerOrders =new ArrayList<>();
 
     public List<Order> getCustomerOrders() {
-        return CustomerOrders;
+        return customerOrders;
     }
 
 
     public void setCustomerOrders(List<Order> customerOrders) {
-        CustomerOrders = customerOrders;
+        this.customerOrders = customerOrders;
     }
 
     public Customer(String firstname, String lastname, String email, String password, Long mobileNo) {
@@ -77,7 +71,6 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.mobileNo = mobileNo;
-
     }
 
     public Customer() {

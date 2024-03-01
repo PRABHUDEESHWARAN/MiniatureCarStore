@@ -76,7 +76,7 @@ class CartServicesTest {
     @DisplayName("Create Cart For Customer - Valid Customer Id")
     void testCreateCartForValidCustomer() throws CartException {
         Integer customerId = 123; // Example customer ID
-        Integer cartId = cartService.CreateCartForCustomer(customerId);
+        Integer cartId = cartService.createCartForCustomer(customerId);
 
         assertNotNull(cartId);
         assertTrue(cartId > 0);

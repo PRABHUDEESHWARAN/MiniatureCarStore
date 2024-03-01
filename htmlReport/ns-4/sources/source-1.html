@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Address</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.project.carstore.customer</a>
+</div>
+
+<h1>Coverage Summary for Class: Address (com.project.carstore.customer)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Address</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.project.carstore.customer;
+&nbsp;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Address {
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Integer addressId;
+&nbsp;    private Integer CustomerId;
+&nbsp;    @Column(name = &quot;DoorNo&quot;,nullable = false)
+&nbsp;    private Integer doorNo;
+&nbsp;    @Column(name = &quot;City&quot;,nullable = false,length = 30)
+&nbsp;    private String city;
+&nbsp;    @Column(name = &quot;Pincode&quot;,nullable = false,length = 6)
+&nbsp;    private Integer pincode;
+&nbsp;    @Column(name = &quot;State&quot;,nullable = false,length = 30)
+&nbsp;    private String state;
+&nbsp;
+&nbsp;    public Integer getCustomerId() {
+<b class="nc">&nbsp;        return CustomerId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCustomerId(Integer customerId) {
+<b class="nc">&nbsp;        CustomerId = customerId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getDoorNo() {
+<b class="nc">&nbsp;        return doorNo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDoorNo(Integer doorNo) {
+<b class="nc">&nbsp;        this.doorNo = doorNo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCity() {
+<b class="nc">&nbsp;        return city;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCity(String city) {
+<b class="nc">&nbsp;        this.city = city;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getPincode() {
+<b class="nc">&nbsp;        return pincode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPincode(Integer pincode) {
+<b class="nc">&nbsp;        this.pincode = pincode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getState() {
+<b class="nc">&nbsp;        return state;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setState(String state) {
+<b class="nc">&nbsp;        this.state = state;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public Address(Integer customerId, Integer doorNo, String city, Integer pincode, String state) {</b>
+<b class="nc">&nbsp;        CustomerId = customerId;</b>
+<b class="nc">&nbsp;        this.doorNo = doorNo;</b>
+<b class="nc">&nbsp;        this.city = city;</b>
+<b class="nc">&nbsp;        this.pincode = pincode;</b>
+<b class="nc">&nbsp;        this.state = state;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    public Address() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-27 14:38</div>
+</div>
+</body>
+</html>

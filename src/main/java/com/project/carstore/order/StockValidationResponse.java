@@ -2,7 +2,7 @@ package com.project.carstore.order;
 
 import java.util.List;
 
-class StockValidationResponse {
+public class StockValidationResponse {
     private Order order;
     private List<String> stockIssues;
 

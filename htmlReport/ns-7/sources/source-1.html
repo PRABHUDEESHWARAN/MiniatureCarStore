@@ -1,0 +1,172 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CardInfo</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.project.carstore.payment</a>
+</div>
+
+<h1>Coverage Summary for Class: CardInfo (com.project.carstore.payment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CardInfo</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.project.carstore.payment;
+&nbsp;
+&nbsp;import jakarta.persistence.Entity;
+&nbsp;import jakarta.persistence.Id;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class CardInfo {
+&nbsp;    private String cardholderName;
+&nbsp;    @Id
+&nbsp;    private Integer cardInfoId;
+&nbsp;    private Integer cardNumber;
+&nbsp;    private LocalDate expiryDate;
+&nbsp;
+&nbsp;    public Integer getCardInfoId() {
+<b class="nc">&nbsp;        return cardInfoId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCardInfoId(Integer cardInfoId) {
+<b class="nc">&nbsp;        this.cardInfoId = cardInfoId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Integer cvv;
+&nbsp;
+<b class="nc">&nbsp;    public CardInfo(String cardholderName, Integer cardInfoId, Integer cardNumber, LocalDate expiryDate, Integer cvv) {</b>
+<b class="nc">&nbsp;        this.cardholderName = cardholderName;</b>
+<b class="nc">&nbsp;        this.cardInfoId = cardInfoId;</b>
+<b class="nc">&nbsp;        this.cardNumber = cardNumber;</b>
+<b class="nc">&nbsp;        this.expiryDate = expiryDate;</b>
+<b class="nc">&nbsp;        this.cvv = cvv;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public CardInfo() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCardholderName() {
+<b class="nc">&nbsp;        return cardholderName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCardholderName(String cardholderName) {
+<b class="nc">&nbsp;        this.cardholderName = cardholderName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCardNumber() {
+<b class="nc">&nbsp;        return cardNumber;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCardNumber(Integer cardNumber) {
+<b class="nc">&nbsp;        this.cardNumber = cardNumber;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getExpiryDate() {
+<b class="nc">&nbsp;        return expiryDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setExpiryDate(LocalDate expiryDate) {
+<b class="nc">&nbsp;        this.expiryDate = expiryDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCvv() {
+<b class="nc">&nbsp;        return cvv;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCvv(Integer cvv) {
+<b class="nc">&nbsp;        this.cvv = cvv;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-27 14:38</div>
+</div>
+</body>
+</html>

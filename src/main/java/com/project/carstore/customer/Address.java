@@ -7,22 +7,22 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressId;
-    private Integer CustomerId;
-    @Column(name = "DoorNo",nullable = false)
+    private Integer customerId;
+    @Column(nullable = false)
     private Integer doorNo;
-    @Column(name = "City",nullable = false,length = 30)
+    @Column(nullable = false,length = 30)
     private String city;
-    @Column(name = "Pincode",nullable = false,length = 6)
+    @Column(nullable = false,length = 6)
     private Integer pincode;
-    @Column(name = "State",nullable = false,length = 30)
+    @Column(nullable = false,length = 30)
     private String state;
 
     public Integer getCustomerId() {
-        return CustomerId;
+        return customerId;
     }
 
     public void setCustomerId(Integer customerId) {
-        CustomerId = customerId;
+        this.customerId = customerId;
     }
 
     public Integer getDoorNo() {
@@ -58,7 +58,7 @@ public class Address {
     }
 
     public Address(Integer customerId, Integer doorNo, String city, Integer pincode, String state) {
-        CustomerId = customerId;
+        this.customerId = customerId;
         this.doorNo = doorNo;
         this.city = city;
         this.pincode = pincode;

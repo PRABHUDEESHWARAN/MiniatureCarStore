@@ -1,17 +1,16 @@
 package com.project.carstore.order;
 
-import com.project.carstore.product.Product;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    //    @OneToOne(cascade = CascadeType.MERGE)
-//    private Product product;
-    private Long ProductId;
+    private Long productId;
     private Integer quantity;
     private Double totalPrice;
     private Integer orderId;
@@ -19,14 +18,11 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Long productId, Integer quantity, Double price, Integer orderId) {
-        this.ProductId = productId;
+    public OrderItem(Long productId, Integer quantity, Double totalPrice, Integer orderId) {
+        this.productId = productId;
         this.quantity = quantity;
-        this.totalPrice = price;
+        this.totalPrice = totalPrice;
         this.orderId = orderId;
-    }
-
-    public OrderItem(Product product, int quantity) {
     }
 
     public Integer getId() {
@@ -38,11 +34,11 @@ public class OrderItem {
     }
 
     public Long getProductId() {
-        return ProductId;
+        return productId;
     }
 
     public void setProductId(Long productId) {
-        ProductId = productId;
+        this.productId = productId;
     }
 
     public Double getTotalPrice() {
@@ -60,6 +56,7 @@ public class OrderItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
     public Integer getOrderId() {
         return orderId;
     }

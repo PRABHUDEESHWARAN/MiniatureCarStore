@@ -1,7 +1,9 @@
 package com.project.carstore.cart;
 
-import com.project.carstore.product.Product;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class CartItem {
@@ -57,10 +59,10 @@ public class CartItem {
         this.productId = productId;
     }
 
-    public CartItem( Integer quantity, Integer cartId, Long productId, Double price) {
+    public CartItem(Integer quantity, Integer cartId, Long productId, Double price) {
         this.quantity = quantity;
         this.cartId = cartId;
-        this.productId=productId;
+        this.productId = productId;
         this.totalPrice = price;
     }
 }

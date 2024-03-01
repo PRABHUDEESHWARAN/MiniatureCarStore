@@ -1,0 +1,91 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CartService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.project.carstore.cart</a>
+</div>
+
+<h1>Coverage Summary for Class: CartService (com.project.carstore.cart)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CartService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.project.carstore.cart;
+&nbsp;
+&nbsp;import com.project.carstore.exceptions.ProductException;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;public interface CartService {
+&nbsp;    public Optional&lt;Cart&gt; getCartById(Integer cartId) throws CartException;
+&nbsp;
+&nbsp;    Integer CreateCartForCustomer(Integer id) throws CartException;
+&nbsp;    public Cart addCartItemToCart(CartItemDTO cartItemDTO) throws CartException;
+&nbsp;    public Optional&lt;CartItem&gt; getCartItemByProductId(Long ProductId) throws CartException;
+&nbsp;    public  Optional&lt;Cart&gt; getCartByCustomerId(Integer customerId) throws CartException ;
+&nbsp;    public String clearCart(Integer customerId) throws CartException;
+&nbsp;    public Cart checkOut() throws CartException;
+&nbsp;    public Cart updateCartItem(UpdateCartItemDTO updateCartItemDTO) throws CartException, ProductException;
+&nbsp;    public String removeCartItem(Integer cartItemId) throws CartException;
+&nbsp;    Set&lt;CartItem&gt; getAllCartItems(Integer cartId)throws CartException;
+&nbsp;    Optional&lt;CartItem&gt; getCartItemById(Integer cartItemId) throws CartException;
+&nbsp;    public Double getCartTotal(Integer cartId) throws CartException;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-27 14:38</div>
+</div>
+</body>
+</html>
