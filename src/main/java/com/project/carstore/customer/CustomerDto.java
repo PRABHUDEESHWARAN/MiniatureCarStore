@@ -1,7 +1,15 @@
 package com.project.carstore.customer;
 
 public class CustomerDto {
+    private Integer userId;
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
     private String firstname;
     private String lastname;
     private String email;
@@ -53,13 +61,12 @@ public class CustomerDto {
     }
 
 
-
-    public CustomerDto(String firstname, String lastname, String email, String password, Long mobileNo) {
+    public CustomerDto(Integer userId, String firstname, String lastname, String email, String password, Long mobileNo) {
+        this.userId = userId;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.mobileNo = mobileNo;
-
     }
 }

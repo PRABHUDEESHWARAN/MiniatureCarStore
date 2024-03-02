@@ -19,7 +19,7 @@ public class CustomerServiceImp implements CustomerService
     }
     @Override
     public Customer addCustomerToDb(CustomerDto customerDTO) throws  CartException {
-        Customer newCustomer =new Customer(customerDTO.getFirstname(),customerDTO.getLastname(),customerDTO.getEmail(),customerDTO.getPassword(),customerDTO.getMobileNo());
+        Customer newCustomer =new Customer(customerDTO.getUserId(),customerDTO.getFirstname(),customerDTO.getLastname(),customerDTO.getEmail(),customerDTO.getPassword(),customerDTO.getMobileNo());
         newCustomer=this.customerRepository.save(newCustomer);
         Integer newCartId=this.cartService.createCartForCustomer(newCustomer.getId());
         newCustomer.setCartId(newCartId);

@@ -9,6 +9,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private Integer userId;
+
     @Column(nullable = false,length = 50)
     private String firstname;
 
@@ -65,7 +67,8 @@ public class Customer {
         this.customerOrders = customerOrders;
     }
 
-    public Customer(String firstname, String lastname, String email, String password, Long mobileNo) {
+    public Customer(Integer userId,String firstname, String lastname, String email, String password, Long mobileNo) {
+        this.userId=userId;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -74,6 +77,14 @@ public class Customer {
     }
 
     public Customer() {
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getId() {
