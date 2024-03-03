@@ -7,6 +7,15 @@ public class UpdateProductDTO {
     private String imageUrl;
     private String colour;
     private Integer quantity;
+    private String category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public Long getProductId() {
         return productId;
@@ -56,12 +65,13 @@ public class UpdateProductDTO {
         this.quantity = quantity;
     }
 
-    public UpdateProductDTO(Long productId, Double price, String description, String imageUrl, String colour, Integer quantity) {
+    public UpdateProductDTO(Long productId, Double price, String description, String imageUrl, String colour, Integer quantity, String category) {
         this.productId = productId;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
         this.colour = colour;
         this.quantity = quantity;
+        this.category = category;
     }
 }

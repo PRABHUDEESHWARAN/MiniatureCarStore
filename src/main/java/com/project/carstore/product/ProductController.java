@@ -110,4 +110,9 @@ public class ProductController {
         return new ResponseEntity<>(productsList,HttpStatus.OK);
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<List<Product>> getAllProductsByCategory(@RequestParam("category") String category) {
+        return new ResponseEntity<>(this.productService.getAllProductsByCategory(category), HttpStatus.OK);
+    }
+
 }

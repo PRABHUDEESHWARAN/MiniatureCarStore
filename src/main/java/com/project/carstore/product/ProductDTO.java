@@ -7,6 +7,15 @@ public class ProductDTO {
     private String imageUrl;
     private String colour;
     private Integer quantity;
+    private String category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getName() {
         return name;
