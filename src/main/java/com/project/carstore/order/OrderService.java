@@ -39,4 +39,6 @@ public interface OrderService {
 
 
     ResponseEntity<Order> confirmOrder(ConfirmOrderReq confirmOrderReq) throws OrderException;
+
+    List<Order> getAllOrders();
 }

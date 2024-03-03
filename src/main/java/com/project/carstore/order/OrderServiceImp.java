@@ -244,4 +244,9 @@ public class OrderServiceImp implements OrderService {
         }
         return this.orderRepository.findByOrderStatus(orderStatus);
     }
+
+    @Override
+    public List<Order> getAllOrders() {
+        return this.orderRepository.findAll();
+    }
 }
