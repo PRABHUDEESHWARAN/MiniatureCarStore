@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -49,5 +50,14 @@ public class AuthenticationService {
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
 
+    }
+
+    public boolean isValidToken(String token) {
+        Optional<User> user = userRepository.findByUsername(jwtService.extractUsername(token));
+        if (user.isPresent()) {
+            return jwtService.isValid(token, user.get());
+        }
+        return false;
+//        return user.filter(value -> jwtService.isValid(token, value)).isPresent();
     }
 }

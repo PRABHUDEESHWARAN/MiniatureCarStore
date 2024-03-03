@@ -4,11 +4,10 @@ import com.project.carstore.cart.CartException;
 import com.project.carstore.exceptions.CustomerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -23,6 +22,15 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody User request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    @GetMapping("/validate")
+    public boolean validateUser(@RequestParam("token") String token) {
+        try {
+            return authenticationService.isValidToken(token);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
 
