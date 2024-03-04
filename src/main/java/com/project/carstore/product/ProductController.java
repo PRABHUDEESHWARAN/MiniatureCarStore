@@ -116,4 +116,7 @@ public class ProductController {
         return new ResponseEntity<>(this.productService.getAllProductsByCategory(category), HttpStatus.OK);
     }
 
+//    @GetMapping("/search")
+//    public ResponseEntity<List<Product>> searchProducts(@RequestParam(""))
+
 }
