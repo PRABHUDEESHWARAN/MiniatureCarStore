@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<Product> addProductToDb(@RequestBody ProductDTO product) throws ProductException
+    public ResponseEntity<Product> addProductToDb(@RequestBody ProductDTO     product) throws ProductException
     {
         Product addedProduct;
         try {
@@ -54,7 +54,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/products/{Id}")
-    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long id) throws ProductException {
+    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") String id) throws ProductException {
         Product deletedProduct;
         try {
             deletedProduct=this.productService.deleteProductFromDb(id);

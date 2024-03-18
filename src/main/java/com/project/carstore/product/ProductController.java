@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{Id}")
-    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") Long id) throws ProductException {
+    public ResponseEntity<Product> deleteProductFromDb(@PathVariable("Id") String id) throws ProductException {
         Product deletedProduct;
         try {
             deletedProduct=this.productService.deleteProductFromDb(id);

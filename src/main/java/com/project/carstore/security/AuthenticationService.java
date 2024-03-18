@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -29,7 +28,7 @@ public class AuthenticationService {
         this.customerService = customerService;
     }
 
-    public AuthenticationResponse register(UserDTO request) throws CustomerException, CartException {
+    public String register(UserDTO request) throws CustomerException, CartException {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -37,27 +36,27 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.valueOf(request.getRole()));
         user = userRepository.save(user);
-        if (request.getRole().equals("USER")){
+        if (request.getRole().equals("USER")) {
             CustomerDto customerDto = new CustomerDto(user.getId(), request.getFirstName(), request.getLastName(), request.getEmail(), request.getPassword(), request.getMobileNo());
             this.customerService.addCustomerToDb(customerDto);
         }
-        return new AuthenticationResponse(jwtService.generateToken(user));
+        return "User Registered Successfully!!!";
     }
 
     public AuthenticationResponse authenticate(User request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        String role = user.getRole().toString();
+        return new AuthenticationResponse(token, role);
 
     }
 
-    public boolean isValidToken(String token) {
+    public ValidateDTO isValidToken(String token) {
         Optional<User> user = userRepository.findByUsername(jwtService.extractUsername(token));
         if (user.isPresent()) {
-            return jwtService.isValid(token, user.get());
-        }
-        return false;
-//        return user.filter(value -> jwtService.isValid(token, value)).isPresent();
+            return new ValidateDTO(jwtService.isValid(token, user.get()),user.get().getRole().toString());
+        }else return new ValidateDTO(false,null);
+
     }
 }

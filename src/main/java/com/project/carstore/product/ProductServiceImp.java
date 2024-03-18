@@ -16,7 +16,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public Product addProductToDb(ProductDTO product) throws ProductException {
         //handle exception here
-        if(product==null || product.getName()==null || product.getPrice()==null || product.getColour()==null || product.getQuantity()==null)
+        if(product==null || product.getName().isEmpty()|| product.getPrice()==null || product.getColour()==null || product.getQuantity()==null)
         {
             throw new ProductException("Insufficient Product Details");
         }
@@ -34,14 +34,14 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product deleteProductFromDb(Long id) throws ProductException {
+    public Product deleteProductFromDb(String id) throws ProductException {
         //handle exception
         if(id==null)
         {
             throw new ProductException("Invalid product id");
         }
         // get product from db, if available delete it
-        Optional<Product> foundProduct=productRepository.findById(id);
+        Optional<Product> foundProduct=productRepository.findById(Long.valueOf(id));
         if(foundProduct.isEmpty())
         {
             throw new ProductException("No such product exist with Id:"+ id);
