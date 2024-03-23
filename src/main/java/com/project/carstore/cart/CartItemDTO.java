@@ -2,13 +2,15 @@ package com.project.carstore.cart;
 
 public class CartItemDTO {
     private Long productId;
-    private Integer customerId;
+
     private Integer cartId;
 
-    public CartItemDTO(Long productId, Integer customerId, Integer cartId) {
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
         this.productId = productId;
-        this.customerId = customerId;
-        this.cartId = cartId;
     }
 
     public Integer getCartId() {
@@ -19,19 +21,8 @@ public class CartItemDTO {
         this.cartId = cartId;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
+    public CartItemDTO(Long productId, Integer cartId) {
         this.productId = productId;
-    }
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+        this.cartId = cartId;
     }
 }

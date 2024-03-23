@@ -1,6 +1,7 @@
 package com.project.carstore.security;
 
 import com.project.carstore.cart.CartException;
+import com.project.carstore.exceptions.AuthenticationException;
 import com.project.carstore.exceptions.CustomerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,13 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(authenticationService.isValidToken(token));
 
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<Profile> getUserProfile(@RequestParam("token") String token) throws AuthenticationException {
+        Profile profile=authenticationService.getUserProfile(token);
+        System.out.println("request came from frontend"+profile.getCustomerId());
+        return ResponseEntity.ok(profile);
     }
 }
 

@@ -39,6 +39,7 @@ public class ProductServiceImp implements ProductService {
         if(id==null)
         {
             throw new ProductException("Invalid product id");
+
         }
         // get product from db, if available delete it
         Optional<Product> foundProduct=productRepository.findById(Long.valueOf(id));

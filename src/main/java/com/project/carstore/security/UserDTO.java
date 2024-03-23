@@ -6,7 +6,7 @@ public class UserDTO {
     private String username;
     private String email;
     private String password;
-    private String confirmpwd;
+
     private String role;
     private Long mobileNo;
 
@@ -22,13 +22,7 @@ public class UserDTO {
         return lastName;
     }
 
-    public String getConfirmpwd() {
-        return confirmpwd;
-    }
 
-    public void setConfirmpwd(String confirmpwd) {
-        this.confirmpwd = confirmpwd;
-    }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -65,13 +59,12 @@ public class UserDTO {
     public void setMobileNo(Long mobileNo) {
         this.mobileNo = mobileNo;
     }
-    public UserDTO(String firstName, String lastName, String username, String email, String password, String role, Long mobileNo,String confirmpwd) {
+    public UserDTO(String firstName, String lastName, String username, String email, String password, String role, Long mobileNo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.confirmpwd=confirmpwd;
         this.role = role;
         this.mobileNo = mobileNo;
     }
