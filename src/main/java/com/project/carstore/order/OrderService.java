@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface OrderService {
     ResponseEntity<StockValidationResponse> createOrder(Integer customerId) throws OrderException, CustomerException, CartException;
 
-    Optional<Order> getOrderById(Integer orderId) throws OrderException;
+    Order getOrderById(Integer orderId) throws OrderException;
 
     Order closeOrderById(Integer orderId) throws OrderException, CustomerException;
 
@@ -38,7 +38,9 @@ public interface OrderService {
     Order updateDeliveryDateByOrderId(Integer orderId, LocalDate newDeliveryDate) throws OrderException;
 
 
-    ResponseEntity<Order> confirmOrder(ConfirmOrderReq confirmOrderReq) throws OrderException;
+    ResponseEntity<Order> confirmOrder(ConfirmOrderReq confirmOrderReq) throws OrderException, CartException;
 
     List<Order> getAllOrders();
+
+    ResponseEntity<Order> cancelOrder(Integer orderId) throws OrderException;
 }

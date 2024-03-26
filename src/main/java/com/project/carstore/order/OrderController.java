@@ -24,12 +24,13 @@ public class OrderController {
 
     @PostMapping("/new/{customerId}")
     public ResponseEntity<StockValidationResponse> createOrder(@PathVariable("customerId") Integer customerId) throws OrderException, CustomerException, CartException {
+        System.out.println("request received");
         return this.orderService.createOrder(customerId);
     }
 
     @GetMapping("/{id}")
-    public Optional<Order> getOrderById(@PathVariable("id") Integer id) throws OrderException {
-        return this.orderService.getOrderById(id);
+    public ResponseEntity<Order> getOrderById(@PathVariable("id") Integer id) throws OrderException {
+        return ResponseEntity.ok( this.orderService.getOrderById(id));
     }
 
     @DeleteMapping("/{orderId}")
@@ -66,6 +67,10 @@ public class OrderController {
     public Order updateDeliveryDateByOrderId(@PathVariable("orderId") Integer orderId, @RequestBody LocalDate newDeliveryDate) throws OrderException {
         return this.orderService.updateDeliveryDateByOrderId(orderId, newDeliveryDate);
     }
+    @PatchMapping("/cancel/{orderId}")
+    public ResponseEntity<Order> cancelOrder(@PathVariable("orderId") Integer orderId) throws OrderException{
+        return this.orderService.cancelOrder(orderId);
+    }
 
     @GetMapping("/all/{customerId}")
     public List<Order> getOrdersByCustomerId(@PathVariable("customerId") Integer customerId) throws OrderException, CustomerException {
@@ -83,7 +88,7 @@ public class OrderController {
     }
 
     @PutMapping("/confirm")
-    public ResponseEntity<Order> confirmOrder(@RequestBody ConfirmOrderReq confirmOrderReq) throws OrderException {
+    public ResponseEntity<Order> confirmOrder(@RequestBody ConfirmOrderReq confirmOrderReq) throws OrderException,CartException {
         return this.orderService.confirmOrder(confirmOrderReq);
     }
 

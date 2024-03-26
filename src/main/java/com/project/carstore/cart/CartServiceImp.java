@@ -78,6 +78,39 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
+    public Cart reduceCartItem(Integer cartItemId) throws CartException {
+        Optional<CartItem> cartItemOpt = this.cartItemRepository.findById((cartItemId));
+        if (cartItemOpt.isPresent()) {
+            CartItem cartItem = cartItemOpt.get();
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            Optional<Product> productOpt = this.productRepository.findById(cartItem.getProductId());
+            Double unitPrice;
+            if (productOpt.isPresent()) {
+                Product product = productOpt.get();
+                unitPrice = product.getPrice();
+                cartItem.setTotalPrice(cartItem.getQuantity() * unitPrice);
+                this.cartItemRepository.save(cartItem);
+                Integer cartId = cartItem.getCartId();
+                Optional<Cart> cartOpt = this.cartRepository.findById(cartId);
+                if (cartOpt.isPresent()) {
+                    Cart cart = cartOpt.get();
+                    Set<CartItem> cartItemSet = cart.getCartItems();
+                    cartItemSet.stream().filter((data) -> data.getCartId() == cartItemId && data.getQuantity() > 1).map(data -> {
+                        data.setQuantity(data.getQuantity() - 1);
+                        data.setTotalPrice(data.getQuantity() * unitPrice);
+                        return data;
+                    });
+
+                    cart.setCartItems(cartItemSet);
+                    cart.setTotalPrice(cart.getTotalPrice()-unitPrice);
+                    this.cartRepository.save(cart);
+                    return cart;
+                } else throw new CartException("Cart does not exist with Id:" + cartId);
+            } else throw new CartException("Product does not exist with Id:" + cartItem.getProductId());
+        } else throw new CartException("CartItem does not Exist with Id:" + cartItemId);
+    }
+
+    @Override
     public Optional<CartItem> getCartItemByProductIdAndCartId(Long productId, Integer cartId) {
         return this.cartItemRepository.findCartItemByCartIdAndProductId(cartId, productId);
     }

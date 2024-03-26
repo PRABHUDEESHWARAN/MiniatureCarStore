@@ -1,6 +1,7 @@
 package com.project.carstore.cart;
 
 import com.project.carstore.exceptions.ProductException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -30,8 +31,8 @@ public class CartController {
     }
 
     @DeleteMapping("/{customerId}")
-    public String clearCustomerCart(@PathVariable("customerId") Integer customerId) throws CartException {
-        return this.cartService.clearCart(customerId);
+    public ResponseEntity<String> clearCustomerCart(@PathVariable("customerId") Integer customerId) throws CartException {
+        return ResponseEntity.ok(this.cartService.clearCart(customerId));
 
     }
 
@@ -46,10 +47,14 @@ public class CartController {
     }
 
     @DeleteMapping("/cartItem/{cartItemId}")
-    public String removeCartItem(@PathVariable("cartItemId") Integer cartItemId) throws CartException {
-        return this.cartService.removeCartItem(cartItemId);
+    public ResponseEntity<String> removeCartItem(@PathVariable("cartItemId") Integer cartItemId) throws CartException {
+        return ResponseEntity.ok(this.cartService.removeCartItem(cartItemId));
     }
+    @PatchMapping("/cartItem/{cartItemId}")
+    public ResponseEntity<Cart> reduceCartItem(@PathVariable("cartItemId") Integer cartItemId) throws CartException{
+        return ResponseEntity.ok(this.cartService.reduceCartItem(cartItemId));
 
+    }
     @GetMapping("/cartItems/{cartId}")
     public Set<CartItem> getAllCartItems(@PathVariable("cartId") Integer cartId) throws CartException {
         return this.cartService.getAllCartItems(cartId);

@@ -102,13 +102,13 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public Optional<Order> getOrderById(Integer orderId) throws OrderException {
+    public Order getOrderById(Integer orderId) throws OrderException {
         if (orderId == null || orderId == 0) {
             throw new OrderException("Invalid OrderId:" + orderId);
         }
         Optional<Order> orderOptional = this.orderRepository.findById(orderId);
         if (orderOptional.isPresent()) {
-            return orderOptional;
+            return orderOptional.get();
         } else {
             throw new OrderException("order does not exist for Id:" + orderId);
         }
@@ -200,7 +200,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Order> confirmOrder(@NotNull ConfirmOrderReq confirmOrderReq) throws OrderException {
+    public ResponseEntity<Order> confirmOrder(@NotNull ConfirmOrderReq confirmOrderReq) throws OrderException, CartException {
         Optional<Order> orderOpt = this.orderRepository.findById(confirmOrderReq.getOrderId());
         Order foundOrder;
         if (orderOpt.isPresent()) {
@@ -211,6 +211,9 @@ public class OrderServiceImp implements OrderService {
             LocalDate orderDate = foundOrder.getOrderDate();
             orderOpt.get().setDeliveryDate(orderDate.plusDays(3));
             this.orderRepository.save(foundOrder);
+            //clear cart
+            Integer customerId=foundOrder.getCustomerId();
+            this.cartService.clearCart(customerId);
             return new ResponseEntity<>(foundOrder, HttpStatus.OK);
         } else throw new OrderException(ISSUE + confirmOrderReq.getOrderId());
     }
@@ -248,5 +251,17 @@ public class OrderServiceImp implements OrderService {
     @Override
     public List<Order> getAllOrders() {
         return this.orderRepository.findAll();
+    }
+
+    @Override
+    public ResponseEntity<Order> cancelOrder(Integer orderId) throws OrderException {
+        Optional<Order> orderOpt = this.orderRepository.findById(orderId);
+        if (orderOpt.isPresent()) {
+            Order foundOrder = orderOpt.get();
+            foundOrder.setOrderStatus("Failed");
+            foundOrder.setTransactionId("Nil");
+            this.orderRepository.save(foundOrder);
+            return ResponseEntity.ok(foundOrder);
+        } else throw new OrderException(ISSUE + orderId);
     }
 }
