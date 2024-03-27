@@ -11,7 +11,7 @@ public interface CartService {
     Integer createCartForCustomer(Integer id) throws CartException;
 
     Cart addCartItemToCart(CartItemDTO cartItemDTO) throws CartException, ProductException;
-    Cart reduceCartItem(Integer cartItemId) throws CartException;
+    Cart reduceCartItem(Integer cartItemId) throws CartException, ProductException;
     Optional<CartItem> getCartItemByProductIdAndCartId(Long productId,Integer cartId);
 
     Optional<Cart> getCartByCustomerId(Integer customerId) throws CartException;

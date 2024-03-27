@@ -51,7 +51,7 @@ public class CartController {
         return ResponseEntity.ok(this.cartService.removeCartItem(cartItemId));
     }
     @PatchMapping("/cartItem/{cartItemId}")
-    public ResponseEntity<Cart> reduceCartItem(@PathVariable("cartItemId") Integer cartItemId) throws CartException{
+    public ResponseEntity<Cart> reduceCartItem(@PathVariable("cartItemId") Integer cartItemId) throws CartException,ProductException{
         return ResponseEntity.ok(this.cartService.reduceCartItem(cartItemId));
 
     }

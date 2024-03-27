@@ -90,6 +90,7 @@ public class OrderServiceImp implements OrderService {
         this.orderItemRepository.saveAll(orderItemsToBeAdded);
         newOrder.setOrderItem(orderItemsToBeAdded);
         newOrder.setTotalItems(orderItemsToBeAdded.size());
+        newOrder.setOrderDate(LocalDate.now());
         newOrder.setTotalPrice(0.0);
         orderItemsToBeAdded.stream().map(OrderItem::getTotalPrice).forEach(p -> newOrder.setTotalPrice(newOrder.getTotalPrice() + p));
         newOrder.setOrderStatus("Pending");
@@ -97,7 +98,6 @@ public class OrderServiceImp implements OrderService {
         this.customerService.addOrderToCustomer(newOrder);
         stockIssues.addAll(insufficientProducts);
         stockIssues.addAll(outOfStockProducts);
-        this.cartService.clearCart(customerId);
         return new ResponseEntity<>(new StockValidationResponse(newOrder, stockIssues), HttpStatus.ACCEPTED);
     }
 
@@ -207,7 +207,6 @@ public class OrderServiceImp implements OrderService {
             foundOrder = orderOpt.get();
             foundOrder.setTransactionId(confirmOrderReq.getTransactionId());
             foundOrder.setOrderStatus("Paid");
-            foundOrder.setOrderDate(LocalDate.now());
             LocalDate orderDate = foundOrder.getOrderDate();
             orderOpt.get().setDeliveryDate(orderDate.plusDays(3));
             this.orderRepository.save(foundOrder);

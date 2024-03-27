@@ -7,6 +7,8 @@ import com.project.carstore.product.Product;
 import com.project.carstore.product.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -78,35 +80,39 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public Cart reduceCartItem(Integer cartItemId) throws CartException {
+    public Cart reduceCartItem(Integer cartItemId) throws CartException, ProductException {
         Optional<CartItem> cartItemOpt = this.cartItemRepository.findById((cartItemId));
         if (cartItemOpt.isPresent()) {
             CartItem cartItem = cartItemOpt.get();
-            cartItem.setQuantity(cartItem.getQuantity() - 1);
-            Optional<Product> productOpt = this.productRepository.findById(cartItem.getProductId());
+            Integer cartId=cartItem.getCartId();
+            Optional<Cart> cartOpt=this.cartRepository.findById(cartId);
+            Optional<Product> productOpt=this.productRepository.findById(cartItem.getProductId());
             Double unitPrice;
-            if (productOpt.isPresent()) {
-                Product product = productOpt.get();
-                unitPrice = product.getPrice();
-                cartItem.setTotalPrice(cartItem.getQuantity() * unitPrice);
-                this.cartItemRepository.save(cartItem);
-                Integer cartId = cartItem.getCartId();
-                Optional<Cart> cartOpt = this.cartRepository.findById(cartId);
+            if(productOpt.isPresent()) {
+                unitPrice = productOpt.get().getPrice();
+
                 if (cartOpt.isPresent()) {
                     Cart cart = cartOpt.get();
                     Set<CartItem> cartItemSet = cart.getCartItems();
-                    cartItemSet.stream().filter((data) -> data.getCartId() == cartItemId && data.getQuantity() > 1).map(data -> {
-                        data.setQuantity(data.getQuantity() - 1);
-                        data.setTotalPrice(data.getQuantity() * unitPrice);
-                        return data;
-                    });
 
-                    cart.setCartItems(cartItemSet);
+                    CartItem itemToUpdate = cartItemSet.stream()
+                            .filter(data -> data.getId().equals(cartItemId))
+                            .findFirst()
+                            .orElseThrow(() -> new CartException("CartItem not found in cart (internal error)"));
+
+                    if (itemToUpdate.getQuantity() > 1) {
+                        itemToUpdate.setQuantity(itemToUpdate.getQuantity() - 1);
+                        itemToUpdate.setTotalPrice(itemToUpdate.getQuantity() * unitPrice);
+                    } else {
+                        cartItemSet.remove(itemToUpdate);
+                        this.cartItemRepository.delete(itemToUpdate);
+                    }
                     cart.setTotalPrice(cart.getTotalPrice()-unitPrice);
                     this.cartRepository.save(cart);
                     return cart;
-                } else throw new CartException("Cart does not exist with Id:" + cartId);
-            } else throw new CartException("Product does not exist with Id:" + cartItem.getProductId());
+                }else throw new CartException("Cart does not exist with Id:"+cartId);
+
+            }else throw new ProductException("Product does not exist with Id:"+cartItem.getProductId());
         } else throw new CartException("CartItem does not Exist with Id:" + cartItemId);
     }
 
