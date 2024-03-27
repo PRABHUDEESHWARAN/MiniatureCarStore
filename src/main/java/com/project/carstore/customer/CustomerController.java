@@ -2,6 +2,7 @@ package com.project.carstore.customer;
 import com.project.carstore.cart.CartException;
 import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.order.Order;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
@@ -40,5 +41,15 @@ public class CustomerController {
     public List<Address> getCustomerAddress(@PathVariable Integer customerId) throws CustomerException{
         return this.customerService.getCustomerAddress(customerId);
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Customer>> getAllCustomer() throws CustomerException{
+        return ResponseEntity.ok(this.customerService.getAllCustomers());
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable("customerId") Integer customerId) throws CustomerException{
+        return ResponseEntity.ok(this.customerService.deleteCustomerById(customerId));
+    }
+
 
 }

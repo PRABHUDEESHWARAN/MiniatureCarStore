@@ -3,6 +3,8 @@ import com.project.carstore.cart.CartException;
 import com.project.carstore.cart.CartService;
 import com.project.carstore.exceptions.CustomerException;
 import com.project.carstore.order.Order;
+import com.project.carstore.security.User;
+import com.project.carstore.security.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.Optional;
@@ -12,10 +14,12 @@ public class CustomerServiceImp implements CustomerService
     private final CustomerRepository customerRepository;
     private final AddressRepository addressRepository;
     private final CartService cartService;
-    public CustomerServiceImp(CustomerRepository customerRepository, AddressRepository addressRepository, CartService cartService) {
+    private final UserRepository userRepository;
+    public CustomerServiceImp(CustomerRepository customerRepository, UserRepository  userRepository,AddressRepository addressRepository, CartService cartService) {
         this.customerRepository = customerRepository;
         this.addressRepository = addressRepository;
         this.cartService = cartService;
+        this.userRepository=userRepository;
     }
     @Override
     public Customer addCustomerToDb(CustomerDto customerDTO) throws  CartException {
@@ -80,6 +84,9 @@ public class CustomerServiceImp implements CustomerService
         if(foundCustomer.isPresent())
         {
             this.customerRepository.delete(foundCustomer.get());
+            Optional<User> userOpt=this.userRepository.findById(foundCustomer.get().getUserId());
+            if(userOpt.isEmpty())throw new CustomerException("User not Found");
+            this.userRepository.delete(userOpt.get());
             return "The Account has been deleted Successfully👍";
         }
         else {
