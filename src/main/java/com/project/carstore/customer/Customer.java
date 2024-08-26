@@ -23,8 +23,8 @@ public class Customer {
     @Column(nullable = false,length = 15)
     private String password;
 
-    @Column(nullable = false,length = 30)
-    private Long customercimobileNo;
+    @Column(nullable = false,length = 20)
+    private Long customerciopimobileNo;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> address=new ArrayList<>();
 
