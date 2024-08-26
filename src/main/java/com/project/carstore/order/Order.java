@@ -17,7 +17,7 @@ public class Order {
     @Column(nullable = false)
     private Integer customerId;
     @Column(nullable = false)
-    private String firstName;
+    private String firstHName;
     @Column(nullable = false)
     private String lastName;
     @OneToMany(cascade = CascadeType.ALL)
