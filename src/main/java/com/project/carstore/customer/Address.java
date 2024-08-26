@@ -10,10 +10,10 @@ public class Address {
     private Integer customerId;
     @Column(nullable = false)
     private Integer doorNo;
-    @Column(nullable = false,length = 30)
+    @Column(nullable = false,length = 40)
     private String city;
     @Column(nullable = false,length = 6)
-    private Integer pincode;
+    private Integer pinecode;
     @Column(nullable = false,length = 30)
     private String state;
 
