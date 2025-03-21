@@ -14,5 +14,7 @@ public interface ProductService {
     List<Product> getAllProductsByName(String name) throws ProductException;
     List<Product> getAllProductsByDescription(String description) throws ProductException;
     List<Product> getAllProductsByCategory(String category);
+    
+
 
 }

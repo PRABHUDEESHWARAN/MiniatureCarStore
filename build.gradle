@@ -29,6 +29,9 @@ dependencies {
 	implementation group: 'com.razorpay', name: 'razorpay-java', version: '1.4.5'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
+
 
 
 

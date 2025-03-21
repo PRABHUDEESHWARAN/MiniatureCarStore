@@ -1,8 +1,11 @@
 package com.project.carstore.security;
 
 import com.project.carstore.cart.CartException;
+import com.project.carstore.customer.Customer;
 import com.project.carstore.customer.CustomerDto;
+import com.project.carstore.customer.CustomerRepository;
 import com.project.carstore.customer.CustomerService;
+import com.project.carstore.exceptions.AuthenticationException;
 import com.project.carstore.exceptions.CustomerException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,17 +22,19 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final CustomerService customerService;
+    private final CustomerRepository customerRepository;
 
 
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, CustomerService customerService) {
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager,CustomerRepository customerRepository, CustomerService customerService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.customerService = customerService;
+        this.customerRepository=customerRepository;
     }
 
-    public AuthenticationResponse register(UserDTO request) throws CustomerException, CartException {
+    public String register(UserDTO request) throws CustomerException, CartException {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -41,23 +46,37 @@ public class AuthenticationService {
             CustomerDto customerDto = new CustomerDto(user.getId(), request.getFirstName(), request.getLastName(), request.getEmail(), request.getPassword(), request.getMobileNo());
             this.customerService.addCustomerToDb(customerDto);
         }
-        return new AuthenticationResponse(jwtService.generateToken(user));
+        return "success";
     }
 
     public AuthenticationResponse authenticate(User request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        String role = String.valueOf(user.getRole());
+
+        return new AuthenticationResponse(token,role);
 
     }
 
-    public boolean isValidToken(String token) {
+    public ValidateDTO isValidToken(String token) {
         Optional<User> user = userRepository.findByUsername(jwtService.extractUsername(token));
         if (user.isPresent()) {
-            return jwtService.isValid(token, user.get());
-        }
-        return false;
-//        return user.filter(value -> jwtService.isValid(token, value)).isPresent();
+            return new ValidateDTO(jwtService.isValid(token, user.get()),user.get().getRole().toString());
+        }else return new ValidateDTO(false,null);
+    }
+
+    public Profile getUserProfile(String token) throws AuthenticationException {
+        Optional<User> userOpt = userRepository.findByUsername(jwtService.extractUsername(token));
+        if(userOpt.isPresent() && jwtService.isValid(token,userOpt.get())){
+            User user = userOpt.get();
+            Optional<Customer> customerOpt =  this.customerRepository.findCustomerByUserId(user.getId());
+            if(customerOpt.isPresent())
+            {
+                Customer customer = customerOpt.get();
+                return new Profile(user.getId(),customer.getId(),customer.getCartId(),user.getUsername(),user.getFirstName(),user.getLastName(),customer.getMobileNo(),customer.getEmail(),user.getRole().toString(),customer.getAddress());
+            }else throw new AuthenticationException(("Customer not found"+ user.getId()));
+        }else throw new AuthenticationException("User not found / token Expired");
+
     }
 }

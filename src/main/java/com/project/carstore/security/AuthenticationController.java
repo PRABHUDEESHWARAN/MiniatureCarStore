@@ -1,6 +1,7 @@
 package com.project.carstore.security;
 
 import com.project.carstore.cart.CartException;
+import com.project.carstore.exceptions.AuthenticationException;
 import com.project.carstore.exceptions.CustomerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody UserDTO request) throws CustomerException, CartException {
+    public ResponseEntity<String> register(@RequestBody UserDTO request) throws CustomerException, CartException {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
@@ -25,12 +26,15 @@ public class AuthenticationController {
     }
 
     @GetMapping("/validate")
-    public boolean validateUser(@RequestParam("token") String token) {
-        try {
-            return authenticationService.isValidToken(token);
-        } catch (Exception e) {
-            return false;
-        }
+    public ResponseEntity<ValidateDTO> validateUser(@RequestParam("token") String token) {
+        return ResponseEntity.ok(authenticationService.isValidToken(token));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<Profile> getUserProfile(@RequestParam("token") String token) throws AuthenticationException{
+        Profile profile = authenticationService.getUserProfile(token);
+        System.out.println("request came from frontend"+ profile.getCustomerId());
+        return ResponseEntity.ok(profile);
     }
 }
 
